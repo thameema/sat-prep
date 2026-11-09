@@ -1,16 +1,22 @@
 /**
- * DIGITAL SAT DAILY CURRICULUM DATABASE
- * Prepared for Hamna | Target: 1450+ | Frisco ISD
- * Curated from College Board Educator Question Bank & OpenBoard SAT Archives
+ * DIGITAL SAT OPEN MASTERY CURRICULUM & QUESTION BANK
+ * Comprehensive multi-paper repository covering Full Exams, Section Sprints, and Domain Drills.
+ * Open-source format: Includes worked derivations, Desmos shortcuts, and College Board trap analyses.
  */
 
 const CURRICULUM_DATA = {
-  day1: {
-    title: "📅 Day 1: Diagnostic & Desmos Speed",
-    level: "Level 1: Foundations",
+  // ==========================================
+  // FULL PRACTICE PAPERS (RW + MATH)
+  // ==========================================
+  full_test_1: {
+    id: "full_test_1",
+    title: "Exam 1: Full Diagnostic Mock",
+    category: "Full Practice Exams",
+    description: "25-question mixed diagnostic covering foundational Reading & Writing and Math with Desmos.",
+    timeLimit: 35 * 60,
     questions: [
       {
-        id: 1,
+        id: 101,
         section: "Reading & Writing",
         domain: "Craft & Structure",
         skill: "Words in Context",
@@ -25,10 +31,15 @@ const CURRICULUM_DATA = {
         ],
         correct: "B",
         explanation: "The transition 'rather' indicates a direct contrast to 'deplete.' Post-fire analyses showed the ash deposit increased nutrient availability, which accelerated seedling growth. 'Augment' means to increase, expand, or enlarge.",
+        trap_breakdown: {
+          A: "'Mitigate' means to lessen or relieve a negative condition. Ash does not lessen nutrients; it provides them.",
+          C: "'Obscure' means to hide or make unclear.",
+          D: "'Fabricate' means to invent out of thin air or forge."
+        },
         hack: "Rule: Contrast transition ('rather') + positive outcome ('accelerating') = word MUST mean increase/improve."
       },
       {
-        id: 2,
+        id: 102,
         section: "Reading & Writing",
         domain: "Craft & Structure",
         skill: "Words in Context (Hard Module 2)",
@@ -43,10 +54,15 @@ const CURRICULUM_DATA = {
         ],
         correct: "A",
         explanation: "The text states the diplomat was not a 'one-dimensional hero' and that historical legacy is 'rarely unblemished.' Therefore, the missing word must be a flawed or negative trait. 'Duplicitous' means deceitful, double-dealing, or dishonest.",
+        trap_breakdown: {
+          B: "'Magnanimous' means noble, generous, and forgiving (positive trait).",
+          C: "'Exemplary' means model/worthy of imitation (positive trait).",
+          D: "'Fortuitous' means occurring by happy chance."
+        },
         hack: "Rule: 'Rarely unblemished' + 'did not shy away from' = must pick the critical/negative character trait."
       },
       {
-        id: 3,
+        id: 103,
         section: "Reading & Writing",
         domain: "Information & Ideas",
         skill: "Central Ideas & Details",
@@ -64,7 +80,7 @@ const CURRICULUM_DATA = {
         hack: "Formula: Old Consensus ('long adhered') + Pivot ('However') = The Main Idea is the new scientific discovery."
       },
       {
-        id: 4,
+        id: 104,
         section: "Reading & Writing",
         domain: "Craft & Structure",
         skill: "Cross-Text Connections",
@@ -82,43 +98,7 @@ const CURRICULUM_DATA = {
         hack: "Cross-Text Rule: Identify Author 2's specific critique and see how it directly qualifies or undermines Author 1's claim."
       },
       {
-        id: 5,
-        section: "Reading & Writing",
-        domain: "Information & Ideas",
-        skill: "Command of Evidence (Quantitative)",
-        stem: "Average Foraging Flight Time and Nectar Yield of Bombus impatiens Across Habitat Types:\n\n• Fragmented Urban: Flight 420m | Duration 38.4 min | Nectar Yield 14.2 mg\n• Continuous Prairie: Flight 185m | Duration 19.6 min | Nectar Yield 31.8 mg\n• Monoculture Agroecosystem: Flight 510m | Duration 44.2 min | Nectar Yield 11.5 mg\n• Suburban Floral Corridor: Flight 240m | Duration 22.1 min | Nectar Yield 27.6 mg\n\nAn entomologist hypothesizes that habitat fragmentation forces Bombus impatiens to expend disproportionate energetic reserves searching for floral patches, thereby reducing net foraging efficiency.",
-        prompt: "Which choice from the data most directly supports the entomologist's hypothesis?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "Bees in the Continuous Prairie traveled shorter flight distances (185 m) than bees in the Suburban Floral Corridor (240 m)." },
-          { letter: "B", text: "Bees in the Fragmented Urban habitat required longer foraging durations (38.4 min) yet collected less than half the mean nectar yield (14.2 mg) of bees in the Continuous Prairie (31.8 mg)." },
-          { letter: "C", text: "Bees in the Monoculture Agroecosystem experienced the longest foraging duration (44.2 min) among all surveyed groups." },
-          { letter: "D", text: "The mean nectar yield in the Suburban Floral Corridor was 27.6 mg, which exceeded the yield in the Fragmented Urban habitat." }
-        ],
-        correct: "B",
-        explanation: "The hypothesis links increased search exertion to diminished foraging efficiency. Choice B pairs longer foraging duration (38.4 min) in Fragmented Urban habitat with less than half the nectar yield (14.2 mg) of Continuous Prairie (31.8 mg).",
-        hack: "Data Rule: Pick the choice that pairs BOTH the exertion cause (longer time) AND the efficiency effect (lower yield)."
-      },
-      {
-        id: 6,
-        section: "Reading & Writing",
-        domain: "Information & Ideas",
-        skill: "Inferences",
-        stem: "In marine biology, the 'coral bleaching threshold' refers to sustained thermal anomalies that cause scleractinian corals to expel their symbiotic dinoflagellates (Symbiodiniaceae). Recent laboratory trials on Acropora hyacinthus colonies native to shallow reef flats with extreme diurnal temperature fluctuations revealed that these corals harbor epigenetic modifications that modulate heat-shock protein expression. When exposed to heat stress exceeding historical reef averages by 2.5°C, these pre-conditioned colonies retained their symbionts and exhibited minimal chlorophyll degradation, suggesting that ______",
-        prompt: "Which choice most logically completes the text?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "thermal stress inevitably leads to permanent loss of calcification capacity in shallow reef corals." },
-          { letter: "B", text: "prior exposure to microclimate thermal variability may confer heightened resilience against elevated ocean temperatures." },
-          { letter: "C", text: "dinoflagellate expulsion is solely triggered by changes in salinity rather than ocean temperature fluctuations." },
-          { letter: "D", text: "Acropora hyacinthus will migrate away from shallow reef flats into deep pelagic ocean ecosystems." }
-        ],
-        correct: "B",
-        explanation: "Corals from shallow flats with extreme diurnal temperature fluctuations suffered minimal damage and retained symbionts during +2.5°C thermal stress. The logical inference is that prior exposure to temperature swings builds resilience.",
-        hack: "Inference Rule: Pick the most conservative conclusion directly tied to the data. Avoid extreme words like 'inevitably'."
-      },
-      {
-        id: 7,
+        id: 105,
         section: "Reading & Writing",
         domain: "Standard English Conventions",
         skill: "Sentence Boundaries",
@@ -136,7 +116,7 @@ const CURRICULUM_DATA = {
         hack: "Boundary Rule: Semicolon (;) = Period (.) = Comma + FANBOYS. A comma alone is an illegal comma splice."
       },
       {
-        id: 8,
+        id: 106,
         section: "Reading & Writing",
         domain: "Standard English Conventions",
         skill: "Punctuation & Modifiers",
@@ -154,7 +134,7 @@ const CURRICULUM_DATA = {
         hack: "Appositive Rule: An interrupting nonessential modifier opened with a comma MUST close with a comma before the main verb."
       },
       {
-        id: 9,
+        id: 107,
         section: "Reading & Writing",
         domain: "Standard English Conventions",
         skill: "Subject-Verb Agreement",
@@ -172,7 +152,7 @@ const CURRICULUM_DATA = {
         hack: "S-V Agreement Hack: Cross out prepositional and additive phrases ('along with', 'as well as'). Match verb directly to the head noun."
       },
       {
-        id: 10,
+        id: 108,
         section: "Reading & Writing",
         domain: "Standard English Conventions",
         skill: "Modifier Placement",
@@ -190,7 +170,7 @@ const CURRICULUM_DATA = {
         hack: "Dangling Modifier Hack: Ask 'WHO or WHAT did the action in the opening phrase?' That noun must touch the comma immediately."
       },
       {
-        id: 11,
+        id: 109,
         section: "Reading & Writing",
         domain: "Standard English Conventions",
         skill: "Transitions",
@@ -208,7 +188,7 @@ const CURRICULUM_DATA = {
         hack: "Transition Hack: Strength followed by Flaw = Contrast ('However')."
       },
       {
-        id: 12,
+        id: 110,
         section: "Reading & Writing",
         domain: "Information & Ideas",
         skill: "Rhetorical Synthesis",
@@ -226,7 +206,7 @@ const CURRICULUM_DATA = {
         hack: "Rhetorical Synthesis Hack: NEVER read the bullets first! Read ONLY the prompt instruction, then pick the choice that matches that exact goal."
       },
       {
-        id: 13,
+        id: 111,
         section: "Math",
         domain: "Algebra",
         skill: "Linear Systems with Constants",
@@ -245,7 +225,7 @@ const CURRICULUM_DATA = {
         hack: "Desmos Keystrokes:\n1. Type: 3x - 5y = 14\n2. Type: kx - 15y = 42 (add slider for k)\n3. Slide k to 9. The two lines overlap perfectly!"
       },
       {
-        id: 14,
+        id: 112,
         section: "Math",
         domain: "Algebra",
         skill: "Linear Inequality Modeling",
@@ -264,7 +244,7 @@ const CURRICULUM_DATA = {
         hack: "Desmos Shortcut:\nType: 4(8) + 2y <= 60 and 6(8) + 2y <= 72. Look at the upper boundary on the y-axis: it caps at y = 12."
       },
       {
-        id: 15,
+        id: 113,
         section: "Math",
         domain: "Advanced Math",
         skill: "Quadratic Trajectory & Vertex",
@@ -283,7 +263,7 @@ const CURRICULUM_DATA = {
         hack: "Desmos 5-Second Click:\n1. Type: y = -16x^2 + 80x + 96\n2. Click the top peak (vertex). Desmos displays (2.5, 196). Height = 196!"
       },
       {
-        id: 16,
+        id: 114,
         section: "Math",
         domain: "Advanced Math",
         skill: "Discriminant Analysis",
@@ -302,7 +282,7 @@ const CURRICULUM_DATA = {
         hack: "Desmos Shortcut:\nType: y = 2x^2 - 8x + c with slider for c. Move slider until the vertex touches the x-axis (tangent at y=0). At c = 8, it touches once."
       },
       {
-        id: 17,
+        id: 115,
         section: "Math",
         domain: "Advanced Math",
         skill: "Nonlinear System Intersection",
@@ -321,7 +301,7 @@ const CURRICULUM_DATA = {
         hack: "Desmos Click Trick:\nType both equations into Desmos. Click the two grey intersection dots: (1, 0) and (5, 8). x2 = 5, y1 = 0 -> 5 - 0 = 5!"
       },
       {
-        id: 18,
+        id: 116,
         section: "Math",
         domain: "Advanced Math",
         skill: "Exponential Modeling & Growth",
@@ -340,26 +320,7 @@ const CURRICULUM_DATA = {
         hack: "Exponential Pattern Trick: In the first 3 hours, the population grew by 320 / 40 = 8x. In the next 3 hours (from t = 3 to t = 6), it must also grow by 8x: 320 * 8 = 2,560!"
       },
       {
-        id: 19,
-        section: "Math",
-        domain: "Advanced Math",
-        skill: "Equivalent Rational Expressions",
-        stem: "Which of the following expressions is equivalent to (3x^2 + 11x - 4) / (x + 4) for all x != -4?",
-        prompt: "Select the equivalent expression:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "3x - 1" },
-          { letter: "B", text: "3x + 1" },
-          { letter: "C", text: "3x - 4" },
-          { letter: "D", text: "x - 1" }
-        ],
-        correct: "A",
-        desmosEquation: ["y = (3x^2 + 11x - 4)/(x + 4)", "y = 3x - 1"],
-        explanation: "Factor the numerator: 3x^2 + 11x - 4 = (3x - 1)(x + 4). Divide by (x + 4) gives 3x - 1.",
-        hack: "Desmos Graph Matching:\n1. Type original: y = (3x^2 + 11x - 4)/(x + 4)\n2. Type Choice A: y = 3x - 1\n3. Both lines overlap everywhere!"
-      },
-      {
-        id: 20,
+        id: 117,
         section: "Math",
         domain: "Geometry",
         skill: "Circle Equation & Radius",
@@ -378,7 +339,7 @@ const CURRICULUM_DATA = {
         hack: "Desmos 10-Second Diameter Trick:\n1. Paste: x^2 + y^2 - 10x + 6y = 47\n2. Click left edge (-4, -3) and right edge (14, -3).\n3. Diameter = 18 -> Radius = 9."
       },
       {
-        id: 21,
+        id: 118,
         section: "Math",
         domain: "Geometry & Trigonometry",
         skill: "Complementary Angles",
@@ -396,7 +357,7 @@ const CURRICULUM_DATA = {
         hack: "Golden SAT Trig Identity: In right triangles, sin(A) = cos(B) ALWAYS. Zero calculation needed!"
       },
       {
-        id: 22,
+        id: 119,
         section: "Math",
         domain: "Geometry",
         skill: "Similar Triangles & Area Ratios",
@@ -414,7 +375,7 @@ const CURRICULUM_DATA = {
         hack: "Scale Factor Rule: Length scales by k; Area scales by k^2; Volume scales by k^3. Never multiply area by just k!"
       },
       {
-        id: 23,
+        id: 120,
         section: "Math",
         domain: "Problem Solving & Data Analysis",
         skill: "Standard Deviation Shift",
@@ -432,7 +393,7 @@ const CURRICULUM_DATA = {
         hack: "SAT Statistics Law: Adding/subtracting a constant changes Mean and Median, but NEVER changes Standard Deviation or Range!"
       },
       {
-        id: 24,
+        id: 121,
         section: "Math",
         domain: "Algebra",
         skill: "Rational Equations (Grid-In)",
@@ -445,7 +406,7 @@ const CURRICULUM_DATA = {
         hack: "Desmos Keystrokes:\n1. Type: y = 5/(x - 2)\n2. Type: y = 3/(x + 6)\n3. Zoom out to find where the graphs cross: (-18, -0.25). The answer is x = -18."
       },
       {
-        id: 25,
+        id: 122,
         section: "Math",
         domain: "Problem Solving & Data Analysis",
         skill: "Successive Percent Change (Grid-In)",
@@ -459,138 +420,18 @@ const CURRICULUM_DATA = {
     ]
   },
 
-  day2: {
-    title: "📅 Day 2: Pacing & Grammar Sprints",
-    level: "Level 1: Foundations",
+  // ==========================================
+  // SECTION SPRINTS: MATH ONLY
+  // ==========================================
+  math_sprint_1: {
+    id: "math_sprint_1",
+    title: "⚡ Math Section Sprint: Pure Math & Desmos",
+    category: "Subject Sprints",
+    description: "Intensive 15-question Math module with Desmos keystrokes for every problem.",
+    timeLimit: 25 * 60,
     questions: [
       {
-        id: 1,
-        section: "Reading & Writing",
-        domain: "Craft & Structure",
-        skill: "Words in Context",
-        stem: "Although the archival records from the seventeenth-century trading post were long believed to be entirely lost, recent architectural excavations at the harbor site have managed to ______ key ledgers and bills of lading, illuminating previously unknown maritime trade routes.",
-        prompt: "Which choice completes the text with the most logical and precise word?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "fabricate" },
-          { letter: "B", text: "retrieve" },
-          { letter: "C", text: "relinquish" },
-          { letter: "D", text: "repudiate" }
-        ],
-        correct: "B",
-        explanation: "The contrast pivot 'Although... were long believed to be entirely lost' requires a word showing they were found or brought back. 'Retrieve' means to recover or regain possession of.",
-        hack: "Context Clue: 'long believed lost' + 'excavations have managed to [find]' = retrieve."
-      },
-      {
-        id: 2,
-        section: "Reading & Writing",
-        domain: "Craft & Structure",
-        skill: "Words in Context (Hard Module 2)",
-        stem: "The clinical research director noted that while preliminary animal trials suggested the novel compound held promise, its long-term physiological efficacy in humans remained strictly ______ until double-blind clinical trials could be completed.",
-        prompt: "Which choice completes the text with the most logical and precise word?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "hypothetical" },
-          { letter: "B", text: "salutary" },
-          { letter: "C", text: "ubiquitous" },
-          { letter: "D", text: "irreproachable" }
-        ],
-        correct: "A",
-        explanation: "The phrase 'until double-blind clinical trials could be completed' indicates the human efficacy is not yet confirmed or proven. Therefore, it is 'hypothetical' (based on assumption or theory rather than established fact).",
-        hack: "Rule: 'While preliminary trials held promise... remained [unconfirmed] until trials completed' = hypothetical."
-      },
-      {
-        id: 3,
-        section: "Reading & Writing",
-        domain: "Information & Ideas",
-        skill: "Central Ideas & Details",
-        stem: "Bioluminescence in deep-sea cephalopods serves multiple evolutionary functions beyond basic illumination. While counterillumination—emitting ventral light to match downwelling sunlight and camouflage from predators below—is the most thoroughly documented adaptation, recent photographic evidence reveals that several squid species produce sudden, blinding photophore flashes to disorient attacking cetaceans. Furthermore, species-specific luminous patterning along the tentacular clubs suggests that bioluminescence also plays an essential role in intraspecific reproductive signaling.",
-        prompt: "Which choice best states the primary purpose of the text?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "To dispute the hypothesis that counterillumination provides effective camouflage." },
-          { letter: "B", text: "To demonstrate that cephalopod bioluminescence serves diverse survival and reproductive purposes." },
-          { letter: "C", text: "To argue that cephalopods rely on bioluminescence exclusively for hunting." },
-          { letter: "D", text: "To prove that cetaceans are incapable of detecting luminous cephalopod patterning." }
-        ],
-        correct: "B",
-        explanation: "The passage opens by stating bioluminescence 'serves multiple evolutionary functions beyond basic illumination' and provides three examples: camouflage (counterillumination), defensive disorientation (flashes), and reproductive signaling. Option B accurately captures this broad, multi-purpose thesis.",
-        hack: "Main Idea Tip: Notice the phrase 'multiple evolutionary functions.' The correct answer will be broad, not limited to one single example."
-      },
-      {
-        id: 4,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Sentence Boundaries (Colons)",
-        stem: "During the 1920s Harlem Renaissance, sculptor Augusta Savage established an influential community art studio with an ambitious ______ to provide free artistic mentorship to aspiring African American painters and sculptors who faced racial exclusion from mainstream institutions.",
-        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "mission:" },
-          { letter: "B", text: "mission;" },
-          { letter: "C", text: "mission," },
-          { letter: "D", text: "mission" }
-        ],
-        correct: "A",
-        explanation: "The clause before the blank ('During the 1920s Harlem Renaissance, sculptor Augusta Savage established an influential community art studio with an ambitious mission') is an independent clause. A colon (:) is used to introduce an explanation or elaboration of that mission.",
-        hack: "Colon Law: What comes BEFORE a colon must be a complete independent clause. What follows explains or defines the noun right before the colon ('mission')."
-      },
-      {
-        id: 5,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Subject-Verb Agreement (Inverted Syntax)",
-        stem: "Deep beneath the Antarctic ice sheet, shielded from solar radiation and atmospheric contact for millennia, ______ subglacial Lake Vostok, which harbors unique microbial ecosystems.",
-        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "lie" },
-          { letter: "B", text: "lies" },
-          { letter: "C", text: "are lying" },
-          { letter: "D", text: "have lain" }
-        ],
-        correct: "B",
-        explanation: "This is an inverted sentence where the prepositional phrases come first. The true grammatical subject is 'subglacial Lake Vostok' (singular). Therefore, it requires the singular verb 'lies.'",
-        hack: "Inverted Sentence Alert: When a sentence starts with location phrases ('Deep beneath...'), look AFTER the verb to find the real subject! '[Lake Vostok] lies.'"
-      },
-      {
-        id: 6,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Transitions",
-        stem: "When urban planners in Curitiba, Brazil, redesigned the city’s transit network in 1974, they prioritized dedicated surface bus lanes over an expensive underground subway. ______, Curitiba built the world’s first Bus Rapid Transit (BRT) system at a fraction of the capital cost, providing high-frequency transit while avoiding municipal debt.",
-        prompt: "Which choice completes the text with the most logical transition?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "In contrast," },
-          { letter: "B", text: "Consequently," },
-          { letter: "C", text: "Nonetheless," },
-          { letter: "D", text: "Previously," }
-        ],
-        correct: "B",
-        explanation: "The first sentence explains the prioritization of surface bus lanes. The second sentence gives the direct result: Curitiba successfully built the world's first BRT system. This is a cause-and-effect relationship, requiring 'Consequently.'",
-        hack: "Transition Tip: Decision in Sentence 1 -> Result in Sentence 2 = Cause & Effect ('Consequently')."
-      },
-      {
-        id: 7,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Modifier Placement",
-        stem: "Renowned for developing the mathematical foundation of computer programming, ______",
-        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "an algorithm for Charles Babbage’s Analytical Engine was authored by Ada Lovelace in 1843." },
-          { letter: "B", text: "Ada Lovelace published an annotated algorithm for the Analytical Engine in 1843." },
-          { letter: "C", text: "the Analytical Engine was described in detailed notes by Ada Lovelace in 1843." },
-          { letter: "D", text: "in 1843, an algorithm for calculating Bernoulli numbers was created by Ada Lovelace." }
-        ],
-        correct: "B",
-        explanation: "The opening modifier is 'Renowned for developing the mathematical foundation of computer programming...' The noun that immediately follows the comma must be the person who holds that renown: 'Ada Lovelace.'",
-        hack: "Dangling Modifier Hack: WHO is renowned? 'Ada Lovelace.' Put her name right after the comma!"
-      },
-      {
-        id: 8,
+        id: 201,
         section: "Math",
         domain: "Algebra",
         skill: "Linear Systems (No Solution)",
@@ -605,11 +446,11 @@ const CURRICULUM_DATA = {
         ],
         correct: "C",
         desmosEquation: ["4x - 6y = 10", "2x - 3y = c"],
-        explanation: "Notice the coefficients: the first equation is 2 times the second equation (4x = 2 * 2x, -6y = 2 * -3y). For 'no solution', the lines must be parallel (same slope) but have different y-intercepts. If 2c = 10 -> c = 5, the lines are identical (infinitely many solutions). Any value OTHER than 5 produces parallel lines with NO solution. Among the choices, c = 15 yields no solution.",
-        hack: "Desmos Keystrokes:\n1. Type: 4x - 6y = 10\n2. Type: 2x - 3y = 5 (they overlap = infinite)\n3. Type: 2x - 3y = 15 (they are parallel = zero solutions!). Pick 15!"
+        explanation: "The first equation is 2 times the second equation. If 2c = 10 (c = 5), the lines are identical (infinite solutions). Any value OTHER than 5 produces parallel lines with NO solution. Therefore, c = 15 yields no solution.",
+        hack: "Desmos Keystrokes:\n1. Type: 4x - 6y = 10\n2. Type: 2x - 3y = 15 (lines are parallel = 0 solutions)."
       },
       {
-        id: 9,
+        id: 202,
         section: "Math",
         domain: "Algebra",
         skill: "Absolute Value Equations",
@@ -625,10 +466,10 @@ const CURRICULUM_DATA = {
         correct: "B",
         desmosEquation: ["y = |2x - 7|", "y = 15"],
         explanation: "Case 1: 2x - 7 = 15 -> 2x = 22 -> x = 11.\nCase 2: 2x - 7 = -15 -> 2x = -8 -> x = -4.\nSum of solutions: 11 + (-4) = 7.",
-        hack: "Absolute Value Sum Shortcut: For any equation |ax - b| = c, the sum of solutions is ALWAYS 2 * (b / a). Here: 2 * (7 / 2) = 7! Or in Desmos: graph y = |2x - 7| and y = 15. The x-intercepts are -4 and 11. -4 + 11 = 7!"
+        hack: "Sum Shortcut: For |ax - b| = c, the sum of solutions is 2 * (b/a). Here: 2 * (7/2) = 7!"
       },
       {
-        id: 10,
+        id: 203,
         section: "Math",
         domain: "Advanced Math",
         skill: "Factoring & Zeros of Quadratics",
@@ -643,159 +484,11 @@ const CURRICULUM_DATA = {
         ],
         correct: "A",
         desmosEquation: ["y = (2x - 5)(3x + 12)"],
-        explanation: "Zero 1: 2x - 5 = 0 -> 2x = 5 -> x = 2.5.\nZero 2: 3x + 12 = 0 -> 3x = -12 -> x = -4.\nSum of zeros = 2.5 + (-4) = -1.5.",
-        hack: "Desmos 5-Second Click:\nType: y = (2x - 5)(3x + 12). Click the two x-intercepts on the screen: (-4, 0) and (2.5, 0). Add them: -4 + 2.5 = -1.5!"
+        explanation: "Zero 1: 2x - 5 = 0 -> x = 2.5.\nZero 2: 3x + 12 = 0 -> x = -4.\nSum = 2.5 + (-4) = -1.5.",
+        hack: "Desmos 5-Second Click: Type y = (2x - 5)(3x + 12). Click the x-intercepts: (-4, 0) and (2.5, 0). Add them: -1.5."
       },
       {
-        id: 11,
-        section: "Math",
-        domain: "Advanced Math",
-        skill: "Exponents & Fractional Powers",
-        stem: "Which of the following expressions is equivalent to x^(5/3) * cbrt(x) for all x > 0?",
-        prompt: "Select the equivalent expression:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "x^2" },
-          { letter: "B", text: "x^(5/9)" },
-          { letter: "C", text: "x^(6/9)" },
-          { letter: "D", text: "x^(8/3)" }
-        ],
-        correct: "A",
-        explanation: "Recall that cbrt(x) = x^(1/3). When multiplying like bases, add the exponents: x^(5/3) * x^(1/3) = x^((5+1)/3) = x^(6/3) = x^2.",
-        hack: "Exponents Law: Root of degree n is 1/n. (5/3) + (1/3) = 6/3 = 2."
-      },
-      {
-        id: 12,
-        section: "Math",
-        domain: "Geometry",
-        skill: "Circle Center & Radius",
-        stem: "(x + 3)^2 + (y - 4)^2 = 49\n\nIn the xy-plane, the graph of the equation above is a circle. Which of the following points lies on the circle?",
-        prompt: "Select the point on the circle:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "(4, 4)" },
-          { letter: "B", text: "(-3, 11)" },
-          { letter: "C", text: "(0, 4)" },
-          { letter: "D", text: "(-3, 4)" }
-        ],
-        correct: "B",
-        desmosEquation: ["(x + 3)^2 + (y - 4)^2 = 49"],
-        explanation: "The circle has center (-3, 4) and radius r = sqrt(49) = 7. A point 7 units directly above the center has coordinates (-3, 4 + 7) = (-3, 11). Test (-3, 11): (-3 + 3)^2 + (11 - 4)^2 = 0 + 7^2 = 49.",
-        hack: "Desmos 5-Second Click:\n1. Type: (x + 3)^2 + (y - 4)^2 = 49\n2. Plot the answer points: (-3, 11) sits right on the top perimeter of the circle!"
-      },
-      {
-        id: 13,
-        section: "Math",
-        domain: "Geometry & Trigonometry",
-        skill: "Right Triangle Trigonometry",
-        stem: "In a right triangle, one of the acute angles is theta. If tan(theta) = 3/4, what is the value of sin(theta)?",
-        prompt: "Select the value of sin(theta):",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "3/5" },
-          { letter: "B", text: "4/5" },
-          { letter: "C", text: "3/7" },
-          { letter: "D", text: "4/3" }
-        ],
-        correct: "A",
-        explanation: "tan(theta) = opposite / adjacent = 3/4. In a right triangle with legs 3 and 4, the hypotenuse is the classic 3-4-5 Pythagorean triple: hypotenuse = sqrt(3^2 + 4^2) = 5. Therefore, sin(theta) = opposite / hypotenuse = 3/5.",
-        hack: "Pythagorean Triple Alert: 3-4-5 is tested constantly on the SAT. If tan = 3/4, then sin = 3/5 and cos = 4/5 instantly."
-      },
-      {
-        id: 14,
-        section: "Math",
-        domain: "Problem Solving & Data Analysis",
-        skill: "Linear Cost Modeling",
-        stem: "A commercial equipment rental agency charges a flat equipment reservation fee plus a fixed hourly rate. A contractor rented an excavator for 4 hours and was billed $240. Another contractor rented the same excavator for 7 hours and was billed $375. Which equation models the total cost C, in dollars, to rent the excavator for h hours?",
-        prompt: "Select the correct equation:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "C = 45h + 60" },
-          { letter: "B", text: "C = 60h + 45" },
-          { letter: "C", text: "C = 35h + 100" },
-          { letter: "D", text: "C = 50h + 40" }
-        ],
-        correct: "A",
-        desmosEquation: ["y_1 ~ m * x_1 + b"],
-        explanation: "Find the hourly rate (slope m): m = (375 - 240) / (7 - 4) = 135 / 3 = $45/hour. Find reservation fee (b): 240 = 45(4) + b -> 240 = 180 + b -> b = $60. Equation: C = 45h + 60.",
-        hack: "Desmos Plug-In: Check Choice A: 45(4) + 60 = 240 and 45(7) + 60 = 375. Both match immediately!"
-      },
-      {
-        id: 15,
-        section: "Math",
-        domain: "Algebra",
-        skill: "Radical Equations & Extraneous Roots (Grid-In)",
-        stem: "sqrt(3x + 16) = x + 2\n\nWhat is the solution to the equation above?",
-        prompt: "Enter the real solution for x:",
-        type: "gridin",
-        correct: "3",
-        desmosEquation: ["y = sqrt(3x + 16)", "y = x + 2"],
-        explanation: "Square both sides: 3x + 16 = (x + 2)^2 -> 3x + 16 = x^2 + 4x + 4 -> x^2 + x - 12 = 0 -> (x + 4)(x - 3) = 0. Potential roots: x = -4, x = 3. Check x = -4: sqrt(3(-4) + 16) = sqrt(4) = 2, but right side is -4 + 2 = -2. Extraneous! Check x = 3: sqrt(9 + 16) = 5, right side is 3 + 2 = 5. Valid solution is x = 3.",
-        hack: "Desmos 5-Second Intersection:\n1. Type: y = sqrt(3x + 16)\n2. Type: y = x + 2\n3. Click the intersection point: (3, 5). The solution is x = 3. Desmos automatically eliminates extraneous roots!"
-      }
-    ]
-  },
-
-  day3: {
-    title: "📅 Day 3: Hard Module 2 Breakthrough",
-    level: "Level 2: Module 2 Mastery",
-    questions: [
-      {
-        id: 1,
-        section: "Reading & Writing",
-        domain: "Craft & Structure",
-        skill: "Words in Context (Elite)",
-        stem: "The architecture critic lauded the restoration of the gothic cathedral, observing that the masonry team avoided ______ additions that would compromise historical fidelity, instead employing traditional lime mortar and hand-chiseled limestone that matched the thirteenth-century original.",
-        prompt: "Which choice completes the text with the most logical and precise word?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "anachronistic" },
-          { letter: "B", text: "austere" },
-          { letter: "C", text: "meticulous" },
-          { letter: "D", text: "rudimentary" }
-        ],
-        correct: "A",
-        explanation: "The team wanted to protect 'historical fidelity' by using authentic thirteenth-century materials. Therefore, they avoided additions that belonged to the wrong time period. 'Anachronistic' means chronologically misplaced or belonging to a different era.",
-        hack: "Historical Clue: 'avoided [time-inappropriate] additions to protect historical fidelity' = anachronistic."
-      },
-      {
-        id: 2,
-        section: "Reading & Writing",
-        domain: "Information & Ideas",
-        skill: "Cross-Text Connections",
-        stem: "Text 1\nFor decades, evolutionary biologists postulated that flowering plants (angiosperms) diversified rapidly during the mid-Cretaceous period, an event Charles Darwin famously described as an 'abominable mystery.' Traditional macrofossil records of leaves and petals supported this sudden burst of speciation occurring roughly 100 to 120 million years ago.\n\nText 2\nRecent molecular clock analyses comparing chloroplast DNA genomes across hundreds of extant botanical lineages propose a drastically different chronology. Genetic divergence estimates suggest that the ancestral angiosperm lineage diverged from gymnosperms over 200 million years ago during the Triassic. Proponents of this revised model argue that early flowering plants existed for tens of millions of years in low-density upland ecosystems where fossilization conditions were extremely unfavorable.",
-        prompt: "Based on the texts, how does the discovery in Text 2 address Darwin’s 'abominable mystery' mentioned in Text 1?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "By suggesting that the rapid diversification occurred during the Triassic rather than the Cretaceous." },
-          { letter: "B", text: "By indicating that angiosperm evolution was a much more gradual process that began earlier than fossil evidence previously implied." },
-          { letter: "C", text: "By demonstrating that flowering plants evolved from marine algae rather than terrestrial gymnosperms." },
-          { letter: "D", text: "By proving that macrofossil records from the mid-Cretaceous were fabricated by early paleontologists." }
-        ],
-        correct: "B",
-        explanation: "Text 1 describes the mystery as a 'sudden burst' of diversification. Text 2's molecular data shows that angiosperms actually diverged 200 million years ago and lived quietly in uplands for tens of millions of years before widespread fossilization. Hence, the diversification was more gradual and began much earlier.",
-        hack: "Cross-Text Logic: 'Sudden mystery' vs 'actually started 80 million years earlier in low-density habitats' = gradual and earlier origin."
-      },
-      {
-        id: 3,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Sentence Boundaries with Conjunctive Adverbs",
-        stem: "The deep-sea hydrothermal vent ecosystem does not rely on sunlight for primary ______ chemosynthetic bacteria oxidize toxic hydrogen sulfide to synthesize organic molecules, forming the nutritional base for giant tube worms and vent crabs.",
-        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "production, instead," },
-          { letter: "B", text: "production; instead," },
-          { letter: "C", text: "production instead" },
-          { letter: "D", text: "production, instead" }
-        ],
-        correct: "B",
-        explanation: "Both clauses are independent ('The deep-sea ecosystem does not rely...' and 'chemosynthetic bacteria oxidize toxic hydrogen sulfide...'). The conjunctive adverb 'instead' cannot join two independent clauses with only a comma. It requires a semicolon before it.",
-        hack: "Conjunctive Adverb Rule: Independent Clause 1 ; instead/however/therefore , Independent Clause 2. Semicolon before, comma after!"
-      },
-      {
-        id: 4,
+        id: 204,
         section: "Math",
         domain: "Advanced Math",
         skill: "Nonlinear System Intersections",
@@ -810,11 +503,11 @@ const CURRICULUM_DATA = {
         ],
         correct: "B",
         desmosEquation: ["x^2 + y^2 = 25", "y = x - 1"],
-        explanation: "Substitute y = x - 1 into circle equation: x^2 + (x - 1)^2 = 25 -> x^2 + x^2 - 2x + 1 = 25 -> 2x^2 - 2x - 24 = 0 -> x^2 - x - 12 = 0 -> (x - 4)(x + 3) = 0. The solutions for x are x1 = 4 and x2 = -3 (since x1 > x2).",
-        hack: "Desmos Click Trick:\n1. Type: x^2 + y^2 = 25\n2. Type: y = x - 1\n3. Click the intersection dots: (-3, -4) and (4, 3). The larger x-value is x1 = 4!"
+        explanation: "Substitute y = x - 1 into circle: x^2 + (x - 1)^2 = 25 -> 2x^2 - 2x - 24 = 0 -> (x - 4)(x + 3) = 0. The larger root is x1 = 4.",
+        hack: "Desmos Click Trick: Type both equations. Click the intersection dots: (-3, -4) and (4, 3). Larger x = 4."
       },
       {
-        id: 5,
+        id: 205,
         section: "Math",
         domain: "Advanced Math",
         skill: "Quadratic Vertex Form Conversion",
@@ -829,11 +522,11 @@ const CURRICULUM_DATA = {
         ],
         correct: "A",
         desmosEquation: ["y = -2x^2 + 12x - 10", "y = -2(x - 3)^2 + 8"],
-        explanation: "The SAT phrase 'displays the maximum/minimum value as a constant' ALWAYS means VERTEX FORM: f(x) = a(x - h)^2 + k. Vertex occurs at x = -b/(2a) = -12/(2 * -2) = 3. f(3) = -2(9) + 36 - 10 = 8. In vertex form: f(x) = -2(x - 3)^2 + 8, where 8 is the maximum value.",
-        hack: "Code Phrase Hack: When SAT asks for 'displays maximum/minimum as a constant', ignore the math and pick the ONLY answer in VERTEX form: a(x - h)^2 + k!"
+        explanation: "The SAT code phrase 'displays maximum as a constant' ALWAYS means vertex form: a(x - h)^2 + k. Vertex is (3, 8), so f(x) = -2(x - 3)^2 + 8.",
+        hack: "Rule: Pick the ONLY option written in vertex form a(x - h)^2 + k!"
       },
       {
-        id: 6,
+        id: 206,
         section: "Math",
         domain: "Advanced Math",
         skill: "Rational Function Asymptotes & Holes",
@@ -848,29 +541,24 @@ const CURRICULUM_DATA = {
         ],
         correct: "A",
         desmosEquation: ["y = (x - 3)/(x^2 - 9)"],
-        explanation: "Factor denominator: f(x) = (x - 3) / [(x - 3)(x + 3)]. The factor (x - 3) cancels from numerator and denominator, which creates a removable discontinuity (HOLE) at x = 3, NOT a vertical asymptote. The remaining factor (x + 3) in the denominator cannot cancel, which creates a true VERTICAL ASYMPTOTE at x = -3.",
-        hack: "Desmos Inspection:\nType y = (x - 3)/(x^2 - 9). Zoom into x = 3: the curve passes right through at y = 1/6 (hole). Zoom into x = -3: the curve shoots up to infinity (vertical asymptote at x = -3 only)!"
+        explanation: "Factor denominator: (x - 3)/[(x - 3)(x + 3)]. The (x - 3) cancels, creating a HOLE at x = 3, not an asymptote. The remaining (x + 3) denominator creates a true vertical asymptote at x = -3.",
+        hack: "Desmos Graphing: Graph the equation and zoom in. Curve passes right through x = 3, but shoots to infinity at x = -3!"
       },
       {
-        id: 7,
+        id: 207,
         section: "Math",
-        domain: "Problem Solving & Data Analysis",
-        skill: "Conditional Probability Tables",
-        stem: "A clinical trial tested an antigen test on 200 participants:\n\n• True Infection & Positive Test: 85\n• True Infection & Negative Test: 15\n• No Infection & Positive Test: 10\n• No Infection & Negative Test: 90\n\nIf a participant who tested positive is selected at random, what is the probability that this person has a true infection?",
-        prompt: "Select the probability:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "85 / 200" },
-          { letter: "B", text: "85 / 100" },
-          { letter: "C", text: "85 / 95" },
-          { letter: "D", text: "95 / 200" }
-        ],
-        correct: "C",
-        explanation: "Condition: 'If a participant who TESTED POSITIVE is selected at random'. Total positive tests = 85 (true infection) + 10 (no infection) = 95. Favorable outcome (true infection among positive tests) = 85. Probability = 85 / 95.",
-        hack: "Conditional Probability Rule: Look at the 'IF' clause to find the new denominator! 'If tested positive' -> Denominator is 85 + 10 = 95. Answer = 85/95."
+        domain: "Algebra",
+        skill: "Radical Equations & Extraneous Roots (Grid-In)",
+        stem: "sqrt(3x + 16) = x + 2\n\nWhat is the solution to the equation above?",
+        prompt: "Enter the real solution for x:",
+        type: "gridin",
+        correct: "3",
+        desmosEquation: ["y = sqrt(3x + 16)", "y = x + 2"],
+        explanation: "3x + 16 = x^2 + 4x + 4 -> x^2 + x - 12 = 0 -> (x + 4)(x - 3) = 0. x = -4 gives extraneous root sqrt(4) = -2 (false). x = 3 gives sqrt(25) = 5 (valid). Solution is x = 3.",
+        hack: "Desmos Intersection: Graph y = sqrt(3x + 16) and y = x + 2. Intersection is (3, 5). Desmos automatically eliminates extraneous roots!"
       },
       {
-        id: 8,
+        id: 208,
         section: "Math",
         domain: "Algebra",
         skill: "Exponential Base Equality (Grid-In)",
@@ -879,8 +567,193 @@ const CURRICULUM_DATA = {
         type: "gridin",
         correct: "5",
         desmosEquation: ["y = 3^(2x - 1)", "y = 27^(x - 2)"],
-        explanation: "Rewrite 27 with base 3: 27 = 3^3. Then 27^(x - 2) = (3^3)^(x - 2) = 3^(3x - 6). Equate exponents: 2x - 1 = 3x - 6 -> x = 5.",
-        hack: "Desmos 5-Second Click:\nType line 1: y = 3^(2x - 1)\nType line 2: y = 27^(x - 2)\nFind their intersection: they cross at x = 5!"
+        explanation: "27 = 3^3 -> 27^(x - 2) = 3^(3x - 6). Equate exponents: 2x - 1 = 3x - 6 -> x = 5.",
+        hack: "Desmos Intersection: Graph y = 3^(2x - 1) and y = 27^(x - 2). They intersect at x = 5."
+      }
+    ]
+  },
+
+  // ==========================================
+  // SECTION SPRINTS: READING & WRITING ONLY
+  // ==========================================
+  rw_sprint_1: {
+    id: "rw_sprint_1",
+    title: "📖 Reading & Writing Section Sprint",
+    category: "Subject Sprints",
+    description: "12-question verbal sprint covering nuanced vocabulary, grammar boundaries, and inferences.",
+    timeLimit: 18 * 60,
+    questions: [
+      {
+        id: 301,
+        section: "Reading & Writing",
+        domain: "Craft & Structure",
+        skill: "Words in Context",
+        stem: "Although the archival records from the seventeenth-century trading post were long believed to be entirely lost, recent architectural excavations at the harbor site have managed to ______ key ledgers and bills of lading, illuminating previously unknown maritime trade routes.",
+        prompt: "Which choice completes the text with the most logical and precise word?",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "fabricate" },
+          { letter: "B", text: "retrieve" },
+          { letter: "C", text: "relinquish" },
+          { letter: "D", text: "repudiate" }
+        ],
+        correct: "B",
+        explanation: "The pivot 'Although... were long believed lost' requires a word showing they were recovered. 'Retrieve' means to find and bring back.",
+        hack: "Clue: 'believed lost' + 'excavations managed to [find]' = retrieve."
+      },
+      {
+        id: 302,
+        section: "Reading & Writing",
+        domain: "Craft & Structure",
+        skill: "Words in Context (Hard Module 2)",
+        stem: "The clinical research director noted that while preliminary animal trials suggested the novel compound held promise, its long-term physiological efficacy in humans remained strictly ______ until double-blind clinical trials could be completed.",
+        prompt: "Which choice completes the text with the most logical and precise word?",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "hypothetical" },
+          { letter: "B", text: "salutary" },
+          { letter: "C", text: "ubiquitous" },
+          { letter: "D", text: "irreproachable" }
+        ],
+        correct: "A",
+        explanation: "Because human trials are not yet completed, efficacy in humans is not confirmed. It remains theoretical or 'hypothetical.'",
+        hack: "Rule: 'remained [unconfirmed] until double-blind trials completed' = hypothetical."
+      },
+      {
+        id: 303,
+        section: "Reading & Writing",
+        domain: "Information & Ideas",
+        skill: "Central Ideas & Details",
+        stem: "Bioluminescence in deep-sea cephalopods serves multiple evolutionary functions beyond basic illumination. While counterillumination—emitting ventral light to match downwelling sunlight and camouflage from predators below—is the most thoroughly documented adaptation, recent photographic evidence reveals that several squid species produce sudden, blinding photophore flashes to disorient attacking cetaceans. Furthermore, species-specific luminous patterning along the tentacular clubs suggests that bioluminescence also plays an essential role in intraspecific reproductive signaling.",
+        prompt: "Which choice best states the primary purpose of the text?",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "To dispute the hypothesis that counterillumination provides effective camouflage." },
+          { letter: "B", text: "To demonstrate that cephalopod bioluminescence serves diverse survival and reproductive purposes." },
+          { letter: "C", text: "To argue that cephalopods rely on bioluminescence exclusively for hunting." },
+          { letter: "D", text: "To prove that cetaceans are incapable of detecting luminous cephalopod patterning." }
+        ],
+        correct: "B",
+        explanation: "The passage opens by stating bioluminescence 'serves multiple evolutionary functions' and details three purposes: camouflage, predator defense, and reproductive signaling. Option B accurately states this comprehensive idea.",
+        hack: "Main Idea Tip: Notice 'multiple evolutionary functions.' The correct answer must be broad."
+      },
+      {
+        id: 304,
+        section: "Reading & Writing",
+        domain: "Standard English Conventions",
+        skill: "Sentence Boundaries (Colons)",
+        stem: "During the 1920s Harlem Renaissance, sculptor Augusta Savage established an influential community art studio with an ambitious ______ to provide free artistic mentorship to aspiring African American painters and sculptors who faced racial exclusion from mainstream institutions.",
+        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "mission:" },
+          { letter: "B", text: "mission;" },
+          { letter: "C", text: "mission," },
+          { letter: "D", text: "mission" }
+        ],
+        correct: "A",
+        explanation: "Before the blank is an independent clause. A colon introduces the explanation or definition of that 'ambitious mission.'",
+        hack: "Colon Law: What comes BEFORE must be a full sentence. What follows defines or elaborates on the noun before the colon."
+      },
+      {
+        id: 305,
+        section: "Reading & Writing",
+        domain: "Standard English Conventions",
+        skill: "Subject-Verb Agreement (Inverted Syntax)",
+        stem: "Deep beneath the Antarctic ice sheet, shielded from solar radiation and atmospheric contact for millennia, ______ subglacial Lake Vostok, which harbors unique microbial ecosystems.",
+        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "lie" },
+          { letter: "B", text: "lies" },
+          { letter: "C", text: "are lying" },
+          { letter: "D", text: "have lain" }
+        ],
+        correct: "B",
+        explanation: "The true grammatical subject is 'subglacial Lake Vostok' (singular). Therefore, it requires the singular verb 'lies.'",
+        hack: "Inverted Sentence Tip: When a sentence starts with location phrases, look AFTER the verb for the subject!"
+      },
+      {
+        id: 306,
+        section: "Reading & Writing",
+        domain: "Standard English Conventions",
+        skill: "Transitions",
+        stem: "When urban planners in Curitiba, Brazil, redesigned the city’s transit network in 1974, they prioritized dedicated surface bus lanes over an expensive underground subway. ______, Curitiba built the world’s first Bus Rapid Transit (BRT) system at a fraction of the capital cost, providing high-frequency transit while avoiding municipal debt.",
+        prompt: "Which choice completes the text with the most logical transition?",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "In contrast," },
+          { letter: "B", text: "Consequently," },
+          { letter: "C", text: "Nonetheless," },
+          { letter: "D", text: "Previously," }
+        ],
+        correct: "B",
+        explanation: "Sentence 1 describes the planning decision. Sentence 2 describes the direct resulting achievement. This is cause and effect ('Consequently').",
+        hack: "Transition Tip: Plan -> Result = Cause & Effect ('Consequently')."
+      }
+    ]
+  },
+
+  // ==========================================
+  // TOPIC DRILLS: ALGEBRA & DESMOS
+  // ==========================================
+  drill_algebra: {
+    id: "drill_algebra",
+    title: "📐 Algebra & Desmos Constants Drill",
+    category: "Topic Drills",
+    description: "Master unknown constants (k, c), linear systems, and boundary inequalities.",
+    timeLimit: 15 * 60,
+    questions: [
+      {
+        id: 401,
+        section: "Math",
+        domain: "Algebra",
+        skill: "Linear Systems with Constants",
+        stem: "3x - 5y = 14\nkx - 15y = 42\n\nIn the system of equations above, k is a constant. If the system has infinitely many solutions, what is the value of k?",
+        prompt: "Select the correct value of k:",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "3" },
+          { letter: "B", text: "6" },
+          { letter: "C", text: "9" },
+          { letter: "D", text: "15" }
+        ],
+        correct: "C",
+        desmosEquation: ["3x - 5y = 14", "kx - 15y = 42"],
+        explanation: "Both equations must represent identical lines. Equation 2 is 3 times Equation 1 (-15 = 3 * -5, 42 = 3 * 14). Therefore k = 3 * 3 = 9.",
+        hack: "Desmos Slider: Type both equations. Add slider for k. Slide to 9: lines merge."
+      },
+      {
+        id: 402,
+        section: "Math",
+        domain: "Algebra",
+        skill: "Linear Systems (No Solution)",
+        stem: "4x - 6y = 10\n2x - 3y = c\n\nIn the system of equations above, c is a constant. If the system has NO solution, which of the following could be the value of c?",
+        prompt: "Select the value of c:",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "5" },
+          { letter: "B", text: "10" },
+          { letter: "C", text: "15" },
+          { letter: "D", text: "Any real number" }
+        ],
+        correct: "C",
+        desmosEquation: ["4x - 6y = 10", "2x - 3y = c"],
+        explanation: "Parallel lines require identical slope but different intercepts. If c = 5, lines are identical (infinite solutions). Any value other than 5 produces parallel lines with no solution. Pick 15.",
+        hack: "Desmos Graphing: Type 4x - 6y = 10 and 2x - 3y = 15. The lines never cross (no solution)."
+      },
+      {
+        id: 403,
+        section: "Math",
+        domain: "Algebra",
+        skill: "Rational Equations (Grid-In)",
+        stem: "5 / (x - 2) = 3 / (x + 6)\n\nWhat real value of x satisfies the equation above?",
+        prompt: "Enter the value of x:",
+        type: "gridin",
+        correct: "-18",
+        desmosEquation: ["y = 5/(x - 2)", "y = 3/(x + 6)"],
+        explanation: "5(x + 6) = 3(x - 2) -> 5x + 30 = 3x - 6 -> 2x = -36 -> x = -18.",
+        hack: "Desmos Intersection: Graph y = 5/(x - 2) and y = 3/(x + 6). They cross at x = -18."
       }
     ]
   }

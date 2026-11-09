@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 SAT Mastery Local Backend Server with Live Coaching Engine
-Serves Hamna's interactive SAT application and handles real-time coaching interactions.
+Serves the interactive Digital SAT application and handles real-time coaching interactions.
 All student activity is logged in real time to live_student_feed.json.
 """
 
@@ -176,10 +176,11 @@ SAT_KNOWLEDGE = {
     }
 }
 
-def generate_coach_response(q_id, user_choice, student_msg):
+def generate_coach_response(q_id, user_choice, student_msg, student_name=""):
     q_data = SAT_KNOWLEDGE.get(q_id)
+    name_str = f", {student_name}" if student_name else ""
     if not q_data:
-        return "I'm right here with you, Hamna! Tell me which question number you're working on and what you're thinking."
+        return f"I'm right here with you{name_str}! Tell me which question number you're working on and what you're thinking."
 
     correct_ans = q_data["correct"]
     is_correct = (str(user_choice).strip().upper() == str(correct_ans).strip().upper())
@@ -187,9 +188,9 @@ def generate_coach_response(q_id, user_choice, student_msg):
     reply = ""
     if user_choice:
         if is_correct:
-            reply += f"🎯 **Spot on, Hamna!** Choice **{correct_ans}** is 100% correct.\n\n"
+            reply += f"🎯 **Spot on{name_str}!** Choice **{correct_ans}** is 100% correct.\n\n"
         else:
-            reply += f"💡 **Good effort!** You picked **{user_choice}**, but the correct answer is **{correct_ans}**.\n\n"
+            reply += f"💡 **Good effort{name_str}!** You picked **{user_choice}**, but the correct answer is **{correct_ans}**.\n\n"
 
     reply += f"**Core Concept:** {q_data['explanation']}\n\n"
 
@@ -203,7 +204,7 @@ def generate_coach_response(q_id, user_choice, student_msg):
         reply += f"📌 **Remember this Rule:** {q_data['rule']}\n"
 
     if student_msg:
-        reply += f"\n*(Coach Note on your question: \"{student_msg}\")* Keep your confidence high—every mistake you catch now is points in your pocket on December 5!"
+        reply += f"\n*(Coach Note on your question: \"{student_msg}\")* Keep your confidence high—every mistake you catch now is points in your pocket on exam day!"
 
     return reply
 
@@ -213,7 +214,7 @@ class SATMasteryHandler(http.server.SimpleHTTPRequestHandler):
         super().__init__(*args, directory=BASE_DIR, **kwargs)
 
     def end_headers(self):
-        # Enable CORS and disable caching so Hamna always gets fresh updates
+        # Enable CORS and disable caching so client always gets fresh updates
         self.send_header("Access-Control-Allow-Origin", "*")
         self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
         self.send_header("Access-Control-Allow-Headers", "Content-Type")
@@ -230,15 +231,17 @@ class SATMasteryHandler(http.server.SimpleHTTPRequestHandler):
             body = self.rfile.read(content_length)
             try:
                 payload = json.loads(body.decode("utf-8"))
-                q_id = payload.get("question_id", 13)
+                q_id = payload.get("question_id", 101)
                 user_choice = payload.get("user_choice", "")
                 student_msg = payload.get("student_message", "")
+                student_name = payload.get("student_name", "")
 
-                coach_reply = generate_coach_response(q_id, user_choice, student_msg)
+                coach_reply = generate_coach_response(q_id, user_choice, student_msg, student_name)
 
                 # Log event
                 append_to_feed({
                     "type": "chat_interaction",
+                    "student_name": student_name,
                     "question_id": q_id,
                     "student_choice": user_choice,
                     "student_message": student_msg,

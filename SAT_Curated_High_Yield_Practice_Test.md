@@ -1,6 +1,6 @@
 # CURATED HIGH-YIELD DIGITAL SAT PRACTICE TEST & DESMOS HACKS
-### Prepared for Hamna | Target: 1350–1450+ | Exam Date: December 5
-**Frisco ISD | Grade 11**
+### Target Score: 1450+ | Digital SAT Preparation
+**Open Digital SAT Mastery Curriculum**
 
 ---
 
