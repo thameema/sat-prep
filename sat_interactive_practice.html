@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>SAT Pro Mastery Hub — Digital SAT Practice & AI Coach</title>
-  <!-- Official Desmos Graphing Calculator API (with College Board fallback) -->
-  <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6"></script>
+  <!-- Official Desmos Graphing Calculator API (async so it never blocks question rendering) -->
+  <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b1cf9dc26972add0fda6" async defer></script>
   <style>
     :root {
       --bg: #f8fafc;
@@ -1380,8 +1380,8 @@
     </div>
   </footer>
 
-  <!-- DATABASE AND ENGINE -->
-  <script src="questions_database.js"></script>
+  <!-- DATABASE AND ENGINE (Cache-busted to ensure fresh curriculum load) -->
+  <script src="questions_database.js?v=20261109-3"></script>
   <script>
     /* STATE & SESSION PERSISTENCE */
     let studentName = localStorage.getItem("sat_student_name") || "";
@@ -1471,14 +1471,17 @@
       if (saved) {
         try {
           const data = JSON.parse(saved);
-          activePaperKey = data.paperKey || "full_test_1";
-          studentAnswers = data.answers || {};
-          flaggedSet = new Set(data.flags || []);
-          timerSeconds = (data.timerSeconds !== undefined) ? data.timerSeconds : 35 * 60;
-          timerRunning = (data.timerRunning !== undefined) ? data.timerRunning : true;
-          currentQIndex = data.currentQIndex || 0;
-          loadPaper(activePaperKey, false);
-          return;
+          const candidateKey = data.paperKey || "full_test_1";
+          if (candidateKey === "mistakes" || (typeof CURRICULUM_DATA !== "undefined" && CURRICULUM_DATA[candidateKey])) {
+            activePaperKey = candidateKey;
+            studentAnswers = data.answers || {};
+            flaggedSet = new Set(data.flags || []);
+            timerSeconds = (data.timerSeconds !== undefined) ? data.timerSeconds : 35 * 60;
+            timerRunning = (data.timerRunning !== undefined) ? data.timerRunning : true;
+            currentQIndex = data.currentQIndex || 0;
+            loadPaper(activePaperKey, false);
+            return;
+          }
         } catch (e) {
           console.warn("Session restore error:", e);
         }
@@ -1488,6 +1491,14 @@
 
     /* PAPER & TEST SELECTION */
     function loadPaper(key, resetState = true) {
+      if (typeof CURRICULUM_DATA === "undefined") {
+        console.error("CURRICULUM_DATA not loaded yet");
+        return;
+      }
+      if (key !== "mistakes" && !CURRICULUM_DATA[key]) {
+        key = CURRICULUM_DATA["full_test_1"] ? "full_test_1" : Object.keys(CURRICULUM_DATA)[0];
+        resetState = true;
+      }
       activePaperKey = key;
       if (resetState) {
         studentAnswers = {};
@@ -1505,11 +1516,15 @@
         }
       } else {
         const paper = CURRICULUM_DATA[key];
-        activeQuestions = paper.questions;
+        activeQuestions = paper.questions || [];
         document.getElementById("active-paper-label").textContent = paper.title;
         if (resetState && paper.timeLimit) {
           timerSeconds = paper.timeLimit;
         }
+      }
+
+      if (currentQIndex < 0 || currentQIndex >= activeQuestions.length) {
+        currentQIndex = 0;
       }
 
       // Highlight active in paper modal

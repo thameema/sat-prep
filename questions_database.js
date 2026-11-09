@@ -416,6 +416,57 @@ const CURRICULUM_DATA = {
         correct: "1",
         explanation: "20% reduction = 0.80k. Then 25% increase = (0.80k) * 1.25 = 1.00k. Therefore m = 1 (or 1.0).",
         hack: "Fraction Hack: 20% down = 4/5. 25% up = 5/4. (4/5) * (5/4) = 1. Back to exactly 100%!"
+      },
+      {
+        id: 123,
+        section: "Math",
+        domain: "Advanced Math",
+        skill: "Absolute Value Equations",
+        stem: "|2x - 7| = 15\n\nWhat is the positive difference between the two solutions to the given equation?",
+        prompt: "Select the correct value:",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "7" },
+          { letter: "B", text: "11" },
+          { letter: "C", text: "15" },
+          { letter: "D", text: "22" }
+        ],
+        correct: "C",
+        desmosEquation: ["y = |2x - 7|", "y = 15"],
+        explanation: "Case 1: 2x - 7 = 15 -> 2x = 22 -> x = 11. Case 2: 2x - 7 = -15 -> 2x = -8 -> x = -4. The positive difference is 11 - (-4) = 15.",
+        hack: "Desmos Keystrokes:\n1. Type: y = |2x - 7|\n2. Type: y = 15\n3. Click both intersections: (-4, 15) and (11, 15). Distance = 11 - (-4) = 15."
+      },
+      {
+        id: 124,
+        section: "Math",
+        domain: "Geometry & Trigonometry",
+        skill: "Circle & Line Intersection",
+        stem: "x^2 + y^2 = 25\ny = x - 1\n\nIn the xy-plane, a circle with radius 5 centered at the origin is intersected by the line y = x - 1 at two points. If (x, y) is the intersection point in Quadrant I, what is the value of x + y?",
+        prompt: "Enter the value of x + y:",
+        type: "gridin",
+        correct: "7",
+        desmosEquation: ["x^2 + y^2 = 25", "y = x - 1"],
+        explanation: "Substitute y = x - 1 into x^2 + y^2 = 25: x^2 + (x - 1)^2 = 25 -> 2x^2 - 2x - 24 = 0 -> (x - 4)(x + 3) = 0. In Quadrant I, x = 4 and y = 3, so x + y = 7.",
+        hack: "Desmos Keystrokes:\n1. Type: x^2 + y^2 = 25\n2. Type: y = x - 1\n3. Click the Quadrant I intersection: (4, 3). Then 4 + 3 = 7!"
+      },
+      {
+        id: 125,
+        section: "Math",
+        domain: "Advanced Math",
+        skill: "Radical Extraneous Solutions",
+        stem: "sqrt(3x + 16) = x + 2\n\nWhat is the set of all real solutions to the given equation?",
+        prompt: "Select the correct solution:",
+        type: "choice",
+        choices: [
+          { letter: "A", text: "-4 only" },
+          { letter: "B", text: "3 only" },
+          { letter: "C", text: "-4 and 3" },
+          { letter: "D", text: "No real solution" }
+        ],
+        correct: "B",
+        desmosEquation: ["y = sqrt(3x + 16)", "y = x + 2"],
+        explanation: "Square both sides: 3x + 16 = (x + 2)^2 = x^2 + 4x + 4 -> x^2 + x - 12 = 0 -> (x + 4)(x - 3) = 0. Testing x = -4 gives sqrt(4) = -2 (extraneous!). Testing x = 3 gives sqrt(25) = 5 (valid). Only x = 3 is a real solution.",
+        hack: "Desmos Keystrokes:\n1. Type: y = sqrt(3x + 16)\n2. Type: y = x + 2\n3. Desmos only graphs real solutions! They intersect at a single point: (3, 5)."
       }
     ]
   },
