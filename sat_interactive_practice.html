@@ -2876,6 +2876,16 @@
       const isTunnelHost = window.location.hostname.includes("trycloudflare.com");
       const targetApiUrl = (isLocalHost || isTunnelHost) ? "/api/chat" : `${CLOUDFLARE_TUNNEL_URL}/api/chat`;
 
+      // Show live typing indicator bubble while AI Coach thinks
+      const msgContainer = document.getElementById("chat-messages-container");
+      const thinkingBubble = document.createElement("div");
+      thinkingBubble.className = "chat-bubble coach";
+      thinkingBubble.style.color = "#64748b";
+      thinkingBubble.style.fontStyle = "italic";
+      thinkingBubble.textContent = "Coach is thinking...";
+      msgContainer.appendChild(thinkingBubble);
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+
       fetch(targetApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -2885,7 +2895,8 @@
           question_data: currentQ,
           user_choice: currentAns,
           student_message: msg,
-          student_name: studentName
+          student_name: studentName,
+          chat_history: chatHistory.slice(-8)
         })
       })
       .then(res => {
@@ -2893,6 +2904,7 @@
         return res.json();
       })
       .then(data => {
+        if (thinkingBubble.parentNode) thinkingBubble.parentNode.removeChild(thinkingBubble);
         if (data && data.reply && !data.reply.includes("Tell me which question number")) {
           appendChatMessage("coach", data.reply);
         } else {
@@ -2901,6 +2913,7 @@
         }
       })
       .catch(() => {
+        if (thinkingBubble.parentNode) thinkingBubble.parentNode.removeChild(thinkingBubble);
         const localReply = getComprehensiveCoachReply(currentQ, currentAns, msg, targetIdx + 1);
         appendChatMessage("coach", localReply);
       });
