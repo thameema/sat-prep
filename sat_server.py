@@ -16,6 +16,7 @@ from datetime import datetime
 PORT = 8080
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FEED_FILE = os.path.join(BASE_DIR, "live_student_feed.json")
+AGY_BIN = "/Users/thameema/.local/bin/agy"
 CLAUDE_BIN = "/Users/thameema/.local/bin/claude"
 
 if not os.path.exists(FEED_FILE):
@@ -119,34 +120,55 @@ STUDENT'S NEW MESSAGE:
 Write your coaching response now:"""
 
 
-def call_claude_haiku(prompt_str):
-    if not os.path.exists(CLAUDE_BIN):
-        return None
-    try:
-        env = os.environ.copy()
-        proc = subprocess.run(
-            [
-                CLAUDE_BIN,
-                "-p",
-                "--model", "haiku",
-                "--setting-sources", "",
-                "--strict-mcp-config",
-                "--tools", ""
-            ],
-            input=prompt_str,
-            text=True,
-            capture_output=True,
-            timeout=22,
-            env=env
-        )
-        if proc.returncode == 0 and proc.stdout and proc.stdout.strip():
-            return proc.stdout.strip()
-        else:
-            print(f"Claude CLI non-zero or empty: rc={proc.returncode} err={proc.stderr[:200]}", file=sys.stderr)
-            return None
-    except Exception as e:
-        print(f"Claude CLI error: {e}", file=sys.stderr)
-        return None
+def call_gemini_coach(prompt_str):
+    env = os.environ.copy()
+    # Primary: Google Gemini via agy CLI (Gemini 3.8 Flash / Gemini 4 Argon)
+    if os.path.exists(AGY_BIN):
+        for model_name in ("Gemini 3.8 Flash (Low)", "Gemini 4 Argon (Low)"):
+            try:
+                proc = subprocess.run(
+                    [
+                        AGY_BIN,
+                        "--model", model_name,
+                        "--disable-slash-commands",
+                        f"-p={prompt_str}"
+                    ],
+                    text=True,
+                    capture_output=True,
+                    timeout=18,
+                    env=env
+                )
+                if proc.returncode == 0 and proc.stdout and proc.stdout.strip():
+                    return proc.stdout.strip()
+                else:
+                    print(f"agy ({model_name}) non-zero: rc={proc.returncode} err={proc.stderr[:200]}", file=sys.stderr)
+            except Exception as e:
+                print(f"agy ({model_name}) error: {e}", file=sys.stderr)
+
+    # Secondary fallback: Claude Haiku CLI
+    if os.path.exists(CLAUDE_BIN):
+        try:
+            proc = subprocess.run(
+                [
+                    CLAUDE_BIN,
+                    "-p",
+                    "--model", "haiku",
+                    "--setting-sources", "",
+                    "--strict-mcp-config",
+                    "--tools", ""
+                ],
+                input=prompt_str,
+                text=True,
+                capture_output=True,
+                timeout=20,
+                env=env
+            )
+            if proc.returncode == 0 and proc.stdout and proc.stdout.strip():
+                return proc.stdout.strip()
+        except Exception as e:
+            print(f"Claude CLI error: {e}", file=sys.stderr)
+
+    return None
 
 
 def generate_fallback_response(q_data, question_number, user_choice, student_msg):
@@ -183,7 +205,7 @@ def generate_fallback_response(q_data, question_number, user_choice, student_msg
 def generate_coach_response(q_id, user_choice, student_msg, student_name="", question_data=None, question_number=None, chat_history=None):
     q_data = dict(question_data) if isinstance(question_data, dict) else {}
 
-    # Call real Claude Haiku LLM with full question & conversation context
+    # Call Google Gemini LLM (Gemini 3.8 Flash / Gemini 4 Argon via agy) with full question & conversation context
     llm_prompt = build_llm_prompt(
         question_data=q_data,
         question_number=question_number,
@@ -192,7 +214,7 @@ def generate_coach_response(q_id, user_choice, student_msg, student_name="", que
         student_name=student_name,
         recent_history=chat_history
     )
-    ai_reply = call_claude_haiku(llm_prompt)
+    ai_reply = call_gemini_coach(llm_prompt)
     if ai_reply:
         return ai_reply
 
