@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Digital SAT Mastery — Hamna | Frisco ISD</title>
-  <!-- Official Desmos API -->
+  <title>Digital SAT Daily Mastery Hub — Hamna | Frisco ISD</title>
+  <!-- Official Desmos Graphing Calculator API -->
   <script src="https://www.desmos.com/api/v1.9/calculator.js?apiKey=dcb31709b452b149e4d50db8708010c8"></script>
   <style>
     :root {
-      --bg: #f1f5f9;
+      --bg: #f8fafc;
       --card-bg: #ffffff;
       --header-bg: #0f172a;
       --primary: #2563eb;
@@ -45,24 +45,24 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* TOP BAR (BLUEBOOK HIGH-END HYBRID) */
+    /* TOP HEADER */
     header {
       background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%);
       color: #ffffff;
-      padding: 10px 24px;
+      padding: 10px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 2px solid #334155;
       flex-shrink: 0;
       box-shadow: var(--shadow-md);
-      z-index: 10;
+      z-index: 100;
     }
 
     .header-left {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
     }
 
     .brand-title {
@@ -77,40 +77,63 @@
     .brand-badge {
       background: #3b82f6;
       color: #ffffff;
-      padding: 3px 8px;
+      padding: 2px 7px;
       border-radius: 6px;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
 
-    .section-pill {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 4px 12px;
-      border-radius: 999px;
+    /* DAILY TEST PICKER BUTTON */
+    .btn-test-picker {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #ffffff;
+      padding: 5px 12px;
+      border-radius: 8px;
       font-size: 12.5px;
-      font-weight: 600;
-      color: #93c5fd;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+
+    .btn-test-picker:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: #93c5fd;
     }
 
     .header-center {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 14px;
+    }
+
+    .streak-pill {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid #f59e0b;
+      color: #fbbf24;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
     .timer-pill {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: rgba(15, 23, 42, 0.7);
-      padding: 5px 14px;
+      padding: 4px 12px;
       border-radius: 999px;
       border: 1px solid #475569;
       font-family: "SF Mono", Monaco, Consolas, monospace;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 700;
       color: #f8fafc;
     }
@@ -119,63 +142,40 @@
       background: none;
       border: none;
       color: #94a3b8;
-      font-size: 12px;
+      font-size: 11px;
       cursor: pointer;
       text-decoration: underline;
-      padding: 0 4px;
-    }
-
-    .mode-pill {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12.5px;
-      color: #cbd5e1;
-    }
-
-    select.mode-dropdown {
-      background: #1e293b;
-      color: #ffffff;
-      border: 1px solid #475569;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-size: 12.5px;
-      font-weight: 600;
-      cursor: pointer;
-      outline: none;
     }
 
     .header-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
 
     .btn-app-tool {
       background: rgba(255, 255, 255, 0.08);
       color: #f8fafc;
       border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 6px 14px;
+      padding: 6px 12px;
       border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
+      font-size: 12.5px;
+      font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
       transition: all 0.15s ease;
     }
 
     .btn-app-tool:hover {
       background: rgba(255, 255, 255, 0.18);
-      border-color: rgba(255, 255, 255, 0.35);
     }
 
     .btn-app-tool.active {
       background: #2563eb;
       border-color: #60a5fa;
       color: #ffffff;
-      box-shadow: 0 0 12px rgba(37, 99, 235, 0.5);
     }
 
     /* MAIN TEST WORKSPACE */
@@ -188,7 +188,6 @@
       position: relative;
     }
 
-    /* LEFT CARD: Question Stem / Passage */
     .card-left {
       flex: 1;
       background: var(--card-bg);
@@ -258,43 +257,6 @@
       margin-bottom: 20px;
     }
 
-    .data-table-wrap {
-      margin: 16px 0;
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-    }
-
-    .stem-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13.5px;
-    }
-
-    .stem-table th {
-      background: #f1f5f9;
-      padding: 10px 14px;
-      text-align: left;
-      font-weight: 700;
-      border-bottom: 2px solid var(--border);
-      color: #334155;
-    }
-
-    .stem-table td {
-      padding: 9px 14px;
-      border-bottom: 1px solid var(--border);
-      color: #1e293b;
-    }
-
-    .stem-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .stem-table tr:nth-child(even) {
-      background: #f8fafc;
-    }
-
-    /* RIGHT CARD: Question Prompt, Choices, and Actions */
     .card-right {
       flex: 1;
       background: var(--card-bg);
@@ -322,7 +284,6 @@
       margin-bottom: 20px;
     }
 
-    /* CHOICES LIST */
     .choices-stack {
       display: flex;
       flex-direction: column;
@@ -385,7 +346,6 @@
       padding-top: 4px;
     }
 
-    /* GRID-IN CONTAINER */
     .gridin-card {
       background: #f8fafc;
       border: 2px solid #e2e8f0;
@@ -422,7 +382,6 @@
       box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
     }
 
-    /* TUTOR ACTION BAR */
     .tutor-control-row {
       display: flex;
       align-items: center;
@@ -468,10 +427,8 @@
 
     .btn-launch-desmos:hover {
       background: #dbeafe;
-      border-color: #93c5fd;
     }
 
-    /* EXPLANATION FEEDBACK BOX */
     .feedback-panel {
       border-radius: 12px;
       padding: 18px 22px;
@@ -538,7 +495,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    /* DRAGGABLE & FLOATING DESMOS WINDOW (PROPER POSITION) */
+    /* FLOATING DESMOS WINDOW */
     .desmos-floating-window {
       position: absolute;
       top: 24px;
@@ -558,7 +515,68 @@
       resize: both;
     }
 
-    /* FLOATING & DRAGGABLE AI COACH CHAT WINDOW */
+    .desmos-window-header {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: grab;
+      user-select: none;
+      flex-shrink: 0;
+    }
+
+    .desmos-window-header:active {
+      cursor: grabbing;
+    }
+
+    .desmos-header-title {
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .desmos-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-desmos-header-tool {
+      background: #1e293b;
+      border: 1px solid #475569;
+      color: #93c5fd;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-close-desmos {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 4px;
+    }
+
+    .btn-close-desmos:hover {
+      color: #ffffff;
+    }
+
+    #desmos-calculator-container {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+    }
+
+    /* FLOATING AI COACH CHAT WINDOW */
     .chat-floating-window {
       position: absolute;
       top: 24px;
@@ -668,10 +686,6 @@
       transition: all 0.1s;
     }
 
-    .btn-chip:hover {
-      background: #dbeafe;
-    }
-
     .chat-input-bar {
       padding: 10px 14px;
       background: #ffffff;
@@ -690,10 +704,6 @@
       outline: none;
     }
 
-    .chat-input-bar input:focus {
-      border-color: #2563eb;
-    }
-
     .btn-send-chat {
       background: #2563eb;
       color: #ffffff;
@@ -705,73 +715,7 @@
       cursor: pointer;
     }
 
-    .desmos-window-header {
-      background: #0f172a;
-      color: #ffffff;
-      padding: 10px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      cursor: grab;
-      user-select: none;
-      flex-shrink: 0;
-    }
-
-    .desmos-window-header:active {
-      cursor: grabbing;
-    }
-
-    .desmos-header-title {
-      font-size: 13px;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .desmos-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-desmos-header-tool {
-      background: #1e293b;
-      border: 1px solid #475569;
-      color: #93c5fd;
-      padding: 3px 8px;
-      border-radius: 5px;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .btn-desmos-header-tool:hover {
-      background: #334155;
-      color: #ffffff;
-    }
-
-    .btn-close-desmos {
-      background: none;
-      border: none;
-      color: #94a3b8;
-      font-size: 18px;
-      cursor: pointer;
-      line-height: 1;
-      padding: 0 4px;
-    }
-
-    .btn-close-desmos:hover {
-      color: #ffffff;
-    }
-
-    #desmos-calculator-container {
-      flex: 1;
-      width: 100%;
-      height: 100%;
-    }
-
-    /* FOOTER NAV BAR */
+    /* FOOTER CONTROLS */
     footer {
       background: #ffffff;
       border-top: 1.5px solid var(--border);
@@ -837,7 +781,6 @@
     .btn-matrix-q:hover {
       border-color: #2563eb;
       background: #ffffff;
-      transform: translateY(-1px);
     }
 
     .btn-matrix-q.active {
@@ -881,18 +824,10 @@
       color: #334155;
     }
 
-    .btn-prev-step:hover {
-      background: #e2e8f0;
-    }
-
     .btn-next-step {
       background: #2563eb;
       border: 1px solid #2563eb;
       color: #ffffff;
-    }
-
-    .btn-next-step:hover {
-      background: #1d4ed8;
     }
 
     .btn-complete-exam {
@@ -902,239 +837,157 @@
       display: none;
     }
 
-    .btn-complete-exam:hover {
-      background: #047857;
-    }
-
-    /* REFERENCE MODAL */
-    .modal-backdrop {
+    /* CURRICULUM SELECTOR MODAL */
+    .curriculum-modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(5px);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 2000;
+      z-index: 3000;
     }
 
-    .modal-window {
+    .curriculum-card {
       background: #ffffff;
       width: 90%;
-      max-width: 780px;
+      max-width: 820px;
       max-height: 85vh;
-      border-radius: 16px;
+      border-radius: 18px;
       overflow-y: auto;
       padding: 28px 32px;
       box-shadow: var(--shadow-float);
     }
 
-    .modal-window-header {
+    .curriculum-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 2px solid #e2e8f0;
-      padding-bottom: 14px;
-      margin-bottom: 20px;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
     }
 
-    /* SCORE / DIAGNOSTIC SCREEN */
-    .diagnostic-screen {
-      display: none;
-      flex-direction: column;
-      height: calc(100vh - 128px);
-      padding: 32px 48px;
-      overflow-y: auto;
+    .level-block {
+      margin-bottom: 24px;
       background: #f8fafc;
-    }
-
-    .diagnostic-container {
-      max-width: 960px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .hero-score-card {
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-      color: #ffffff;
-      border-radius: 16px;
-      padding: 32px;
-      display: flex;
-      justify-content: space-around;
-      box-shadow: var(--shadow-lg);
-      margin-bottom: 28px;
-      text-align: center;
-    }
-
-    .hero-stat h2 {
-      font-size: 46px;
-      font-weight: 800;
-      color: #60a5fa;
-      line-height: 1.1;
-    }
-
-    .hero-stat p {
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: #94a3b8;
-      margin-top: 6px;
-      font-weight: 700;
-    }
-
-    .coach-sync-banner {
-      background: #ffffff;
-      border: 2px dashed #93c5fd;
+      border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 24px;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-      margin-bottom: 28px;
+      padding: 18px;
     }
 
-    .btn-sync-coach {
-      background: #2563eb;
-      color: #ffffff;
-      border: none;
-      padding: 13px 28px;
-      border-radius: 10px;
+    .level-title {
       font-size: 15px;
       font-weight: 800;
-      cursor: pointer;
-      display: inline-flex;
+      color: #1e3a8a;
+      display: flex;
       align-items: center;
-      gap: 10px;
-      margin-top: 14px;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+      gap: 8px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .day-item-btn {
+      background: #ffffff;
+      border: 2px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px 16px;
+      text-align: left;
+      cursor: pointer;
       transition: all 0.15s;
     }
 
-    .btn-sync-coach:hover {
-      background: #1d4ed8;
-      transform: translateY(-1px);
+    .day-item-btn:hover {
+      border-color: #2563eb;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-sm);
     }
 
-    /* MOBILE PHONE OPTIMIZATION (iPhone & Android) */
+    .day-item-btn.active {
+      border-color: #2563eb;
+      background: #eff6ff;
+    }
+
+    .day-badge-text {
+      font-size: 11px;
+      font-weight: 800;
+      color: #2563eb;
+      text-transform: uppercase;
+    }
+
+    .day-title-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 4px;
+    }
+
+    .day-meta-text {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+
+    /* MOBILE PHONE OPTIMIZATION */
     @media (max-width: 820px) {
       body {
         height: auto;
         min-height: 100vh;
         overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
       }
-
       header {
         padding: 10px 12px;
         flex-direction: column;
         align-items: stretch;
         gap: 8px;
       }
-
-      .header-left {
+      .header-left, .header-center, .header-right {
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
       }
-
-      .header-center {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        gap: 8px;
-      }
-
-      .header-right {
-        display: flex;
-        justify-content: space-between;
-        width: 100%;
-        gap: 8px;
-      }
-
       .btn-app-tool {
         flex: 1;
         justify-content: center;
         padding: 7px 8px;
-        font-size: 12px;
+        font-size: 11.5px;
       }
-
       .test-container {
         flex-direction: column;
-        padding: 10px 10px 80px 10px; /* 80px bottom space for fixed footer */
+        padding: 10px 10px 80px 10px;
         height: auto;
         overflow: visible;
         gap: 12px;
       }
-
       .card-left, .card-right {
         flex: none;
         width: 100%;
         border-radius: 12px;
         overflow: visible;
       }
-
       .card-body-scroll, .card-right-scroll {
         overflow-y: visible;
         padding: 16px 16px;
       }
-
-      .stem-text {
-        font-size: 15px;
-        line-height: 1.6;
-      }
-
-      .prompt-text {
-        font-size: 15px;
-      }
-
-      .choice-card {
-        padding: 12px 14px;
-        border-radius: 10px;
-      }
-
-      .letter-avatar {
-        width: 28px;
-        height: 28px;
-        font-size: 12.5px;
-        margin-right: 10px;
-      }
-
-      .choice-body-text {
-        font-size: 14px;
-      }
-
-      /* Mobile Desmos & Chat: Full-Screen Modal Overlay */
       .desmos-floating-window, .chat-floating-window {
         position: fixed !important;
         inset: 0 !important;
-        top: 0 !important;
-        left: 0 !important;
-        right: 0 !important;
-        bottom: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
-        min-width: 100vw !important;
-        min-height: 100vh !important;
-        max-width: 100vw !important;
-        max-height: 100vh !important;
         border-radius: 0 !important;
         border: none !important;
         resize: none !important;
         z-index: 99999 !important;
       }
-
-      .desmos-window-header {
-        padding: 14px 16px;
-        cursor: default;
-      }
-
-      .btn-close-desmos {
-        font-size: 24px;
-        padding: 0 8px;
-      }
-
-      /* Mobile Fixed Thumb Footer */
       footer {
         position: fixed;
         bottom: 0;
@@ -1143,47 +996,12 @@
         height: 60px;
         padding: 6px 12px;
         z-index: 500;
-        box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.08);
       }
-
-      .nav-left-ctrl {
-        gap: 6px;
-      }
-
       .review-flag-label span {
         display: none;
       }
-
       .q-matrix-scroll {
         max-width: calc(100vw - 170px);
-        padding: 2px 4px;
-      }
-
-      .btn-matrix-q {
-        width: 32px;
-        height: 32px;
-        font-size: 12px;
-      }
-
-      .btn-nav-action {
-        padding: 8px 12px;
-        font-size: 13px;
-      }
-
-      /* Diagnostic screen on mobile */
-      .diagnostic-screen {
-        padding: 16px 12px 60px 12px;
-        height: auto;
-      }
-
-      .hero-score-card {
-        flex-direction: column;
-        gap: 16px;
-        padding: 20px;
-      }
-
-      .hero-stat h2 {
-        font-size: 34px;
       }
     }
   </style>
@@ -1194,37 +1012,37 @@
   <header>
     <div class="header-left">
       <div class="brand-title">
-        <span>⚡ SAT Pro Hub</span>
+        <span>⚡ SAT Pro</span>
         <span class="brand-badge">Frisco ISD</span>
       </div>
-      <div class="section-pill" id="section-pill">Section 2: Math</div>
+      <button class="btn-test-picker" onclick="openCurriculumModal()">
+        <span id="active-day-label">📅 Day 1: Foundation & Desmos</span>
+        <span>▼</span>
+      </button>
     </div>
 
     <div class="header-center">
+      <div class="streak-pill">
+        <span>🔥</span>
+        <span id="streak-counter">Day 1 of 26</span>
+      </div>
+
       <div class="timer-pill">
         <span>⏱️</span>
         <span id="timer-text">35:00</span>
         <button class="btn-toggle-time" id="btn-toggle-time" onclick="toggleTimer()">Hide</button>
       </div>
-
-      <div class="mode-pill">
-        <span>Mode:</span>
-        <select class="mode-dropdown" id="mode-dropdown" onchange="switchMode(this.value)">
-          <option value="tutor" selected>Tutor Mode (Live Feedback & Desmos Hacks)</option>
-          <option value="exam">Exam Simulation (Strict Timed, No Hints)</option>
-        </select>
-      </div>
     </div>
 
     <div class="header-right">
-      <button class="btn-app-tool" id="btn-toggle-chat" onclick="toggleChatDrawer()" style="background: #1d4ed8; border-color: #60a5fa; color: #ffffff;">
+      <button class="btn-app-tool" id="btn-toggle-chat" onclick="toggleChatDrawer()" style="background: #1d4ed8; color: #ffffff;">
         <span>🤖</span> Ask AI Coach
       </button>
       <button class="btn-app-tool" id="btn-toggle-calculator" onclick="toggleDesmos()">
         <span>📐</span> Desmos Calculator
       </button>
       <button class="btn-app-tool" onclick="openReferenceSheet()">
-        <span>📖</span> Reference Sheet
+        <span>📖</span> Reference
       </button>
     </div>
   </header>
@@ -1232,14 +1050,14 @@
   <!-- MAIN TEST CONTAINER -->
   <div class="test-container" id="main-test-view">
     
-    <!-- LEFT CARD: Question Stem / Table -->
+    <!-- LEFT CARD: Question Stem -->
     <div class="card-left">
       <div class="card-header-bar">
         <div class="tags-group">
           <span class="badge-domain" id="domain-badge">Algebra</span>
           <span class="badge-skill" id="skill-badge">Linear Systems with Constants</span>
         </div>
-        <div class="q-number-pill" id="q-number-indicator">Question 13 of 25</div>
+        <div class="q-number-pill" id="q-number-indicator">Question 1 of 25</div>
       </div>
       <div class="card-body-scroll">
         <div class="stem-text" id="stem-text">Loading problem...</div>
@@ -1252,16 +1070,16 @@
       <div class="card-right-scroll">
         <div class="prompt-text" id="prompt-text">Select the correct value:</div>
 
-        <!-- Multiple Choice Stack -->
+        <!-- Choices -->
         <div class="choices-stack" id="choices-stack"></div>
 
         <!-- Grid-in Card -->
         <div class="gridin-card" id="gridin-card" style="display: none;">
-          <label>Enter your numerical answer (integer or decimal):</label>
+          <label>Enter your numerical answer (integer, fraction, or decimal):</label>
           <input type="text" class="gridin-box" id="gridin-input" placeholder="e.g. 196 or -18" oninput="recordGridin(this.value)">
         </div>
 
-        <!-- Tutor Mode Action Controls -->
+        <!-- Controls -->
         <div class="tutor-control-row" id="tutor-controls">
           <button class="btn-verify" onclick="verifyAnswer()">
             <span>✓</span> Check Answer
@@ -1271,7 +1089,7 @@
           </button>
         </div>
 
-        <!-- Instant Explanation Feedback Panel -->
+        <!-- Feedback Panel -->
         <div class="feedback-panel" id="feedback-panel">
           <div class="feedback-title" id="feedback-title"></div>
           <div id="feedback-explanation"></div>
@@ -1286,7 +1104,7 @@
       </div>
     </div>
 
-    <!-- DRAGGABLE FLOATING DESMOS WINDOW -->
+    <!-- FLOATING DESMOS WINDOW -->
     <div class="desmos-floating-window" id="desmos-window">
       <div class="desmos-window-header" id="desmos-drag-bar">
         <div class="desmos-header-title">
@@ -1301,7 +1119,7 @@
       <div id="desmos-calculator-container"></div>
     </div>
 
-    <!-- DRAGGABLE / FLOATING AI COACH CHAT WINDOW -->
+    <!-- FLOATING AI COACH CHAT WINDOW -->
     <div class="chat-floating-window" id="chat-window">
       <div class="chat-window-header" id="chat-drag-bar">
         <div class="chat-header-title">
@@ -1328,94 +1146,74 @@
 
   </div>
 
-  <!-- DIAGNOSTIC / FINISH REPORT SCREEN -->
-  <div class="diagnostic-screen" id="diagnostic-screen">
-    <div class="diagnostic-container">
-      <h1 style="font-size: 28px; font-weight: 800; margin-bottom: 4px;">Diagnostic Exam Performance</h1>
-      <p style="color: #64748b; font-size: 14.5px; margin-bottom: 24px;">Student: <strong>Hamna</strong> | High School: <strong>Centennial HS (Frisco ISD)</strong> | Target: <strong>1450+</strong></p>
-
-      <div class="hero-score-card">
-        <div class="hero-stat">
-          <h2 id="final-total-score">0/25</h2>
-          <p>Total Accuracy</p>
+  <!-- CURRICULUM & DAILY TEST SELECTOR MODAL -->
+  <div class="curriculum-modal-backdrop" id="curriculum-modal" onclick="closeCurriculumModal(event)">
+    <div class="curriculum-card" onclick="event.stopPropagation()">
+      <div class="curriculum-header">
+        <div>
+          <h2 style="font-size: 22px; font-weight: 800;">Digital SAT Daily Training Curriculum</h2>
+          <p style="color: #64748b; font-size: 13.5px; margin-top: 4px;">Target: 1450+ | Exam Date: December 5, 2026</p>
         </div>
-        <div class="hero-stat">
-          <h2 id="final-rw-score">0/12</h2>
-          <p>Reading & Writing</p>
-        </div>
-        <div class="hero-stat">
-          <h2 id="final-math-score">0/13</h2>
-          <p>Math Section</p>
-        </div>
-        <div class="hero-stat">
-          <h2 id="final-est-sat">--</h2>
-          <p>Projected SAT Range</p>
-        </div>
+        <button class="btn-close-desmos" onclick="closeCurriculumModal()">✕</button>
       </div>
 
-      <div class="coach-sync-banner">
-        <h3 style="font-size: 19px; font-weight: 800; color: #0f172a;">Live AI Coaching Ready</h3>
-        <p style="color: #475569; font-size: 14.5px; max-width: 680px; margin: 8px auto 16px auto;">
-          Click the button below to copy Hamna’s exact answers and error breakdown. Paste it directly into our chat session, and I will coach her through every missed question with custom drills!
-        </p>
-        <button class="btn-sync-coach" onclick="copyResultsForCoach()">
-          <span>📋</span> Copy Diagnostic Report for AI Coach
-        </button>
-        <div id="sync-success-note" style="color: #059669; font-weight: 700; font-size: 14px; margin-top: 10px; display: none;">
-          ✓ Diagnostic copied to clipboard! Paste it into our chat window now.
+      <!-- LEVEL 1 -->
+      <div class="level-block">
+        <div class="level-title">
+          <span>🌱 Level 1: Foundations & Speed Hacks (Days 1–7)</span>
+        </div>
+        <div class="days-grid">
+          <div class="day-item-btn active" onclick="switchDailyTest('day1')">
+            <div class="day-badge-text">Day 1 • 25 Questions</div>
+            <div class="day-title-text">Diagnostic & Desmos Speed</div>
+            <div class="day-meta-text">Linear systems, vertex clicks, sentence boundaries</div>
+          </div>
+          <div class="day-item-btn" onclick="switchDailyTest('day2')">
+            <div class="day-badge-text">Day 2 • 25 Questions</div>
+            <div class="day-title-text">Pacing & Grammar Sprints</div>
+            <div class="day-meta-text">Q15–27 reverse order, modifier traps, roots</div>
+          </div>
         </div>
       </div>
 
-      <h3 style="font-size: 18px; font-weight: 800; margin-bottom: 12px;">Detailed Question Breakdown</h3>
-      <div class="data-table-wrap">
-        <table class="stem-table" id="diag-summary-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Section</th>
-              <th>Topic / Skill</th>
-              <th>Your Answer</th>
-              <th>Correct Answer</th>
-              <th>Result</th>
-            </tr>
-          </thead>
-          <tbody id="diag-summary-body"></tbody>
-        </table>
+      <!-- LEVEL 2 -->
+      <div class="level-block">
+        <div class="level-title">
+          <span>🚀 Level 2: Hard Module 2 Breakthrough (Days 8–14)</span>
+        </div>
+        <div class="days-grid">
+          <div class="day-item-btn" onclick="switchDailyTest('day3')">
+            <div class="day-badge-text">Day 3 • 25 Questions</div>
+            <div class="day-title-text">Hard Module 2 Routing</div>
+            <div class="day-meta-text">Nonlinear intersections, science graphs, vocab</div>
+          </div>
+          <div class="day-item-btn" onclick="switchDailyTest('day4')">
+            <div class="day-badge-text">Day 4 • 25 Questions</div>
+            <div class="day-title-text">Data Literacy & Inferences</div>
+            <div class="day-meta-text">Exponential regressions, circles, cross-text</div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
 
-  <!-- REFERENCE SHEET MODAL -->
-  <div class="modal-backdrop" id="ref-modal-backdrop" onclick="closeReferenceSheet(event)">
-    <div class="modal-window" onclick="event.stopPropagation()">
-      <div class="modal-window-header">
-        <h2 style="font-size: 20px; font-weight: 800;">Official College Board SAT Math Reference Sheet</h2>
-        <button class="btn-close-desmos" onclick="closeReferenceSheet()">✕</button>
+      <!-- LEVEL 3 -->
+      <div class="level-block">
+        <div class="level-title">
+          <span>🏆 Level 3: Elite 1450+ Traps & Mastery (Days 15–21)</span>
+        </div>
+        <div class="days-grid">
+          <div class="day-item-btn" onclick="switchDailyTest('day5')">
+            <div class="day-badge-text">Day 5 • 25 Questions</div>
+            <div class="day-title-text">Elite 1450+ Challenge</div>
+            <div class="day-meta-text">Trig identities, similar area k^2, complex logic</div>
+          </div>
+          <div class="day-item-btn" onclick="switchDailyTest('mistakes')">
+            <div class="day-badge-text" style="color: #e11d48;">🔁 Adaptive Mistake Bank</div>
+            <div class="day-title-text">Retry Missed Questions</div>
+            <div class="day-meta-text" id="mistake-bank-count">0 questions in mistake bank</div>
+          </div>
+        </div>
       </div>
-      <div style="font-size: 14.5px; line-height: 1.75; color: #334155;">
-        <p><strong>Every formula given on the real Digital SAT:</strong></p>
-        <ul style="margin: 12px 0 16px 24px;">
-          <li><strong>Circle:</strong> Area $= \pi r^2$ | Circumference $= 2\pi r$. Total degrees in circle $= 360^\circ$, Total radians $= 2\pi$.</li>
-          <li><strong>Rectangle:</strong> Area $= \ell w$</li>
-          <li><strong>Triangle:</strong> Area $= \frac{1}{2}bh$ | Sum of angles in a triangle $= 180^\circ$.</li>
-          <li><strong>Pythagorean Theorem:</strong> $a^2 + b^2 = c^2$ (Right triangles only).</li>
-          <li><strong>Special Right Triangles:</strong>
-            <ul>
-              <li>$30^\circ-60^\circ-90^\circ$: Side ratio $= x : x\sqrt{3} : 2x$ (hypotenuse is $2x$).</li>
-              <li>$45^\circ-45^\circ-90^\circ$: Side ratio $= s : s : s\sqrt{2}$.</li>
-            </ul>
-          </li>
-          <li><strong>3D Volume Formulas:</strong>
-            <ul>
-              <li>Rectangular Prism: $V = \ell w h$</li>
-              <li>Right Cylinder: $V = \pi r^2 h$</li>
-              <li>Sphere: $V = \frac{4}{3}\pi r^3$</li>
-              <li>Right Cone: $V = \frac{1}{3}\pi r^2 h$</li>
-              <li>Pyramid: $V = \frac{1}{3}\text{Base Area} \times h$</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+
     </div>
   </div>
 
@@ -1433,584 +1231,83 @@
     <div class="nav-right-btns">
       <button class="btn-nav-action btn-prev-step" id="btn-prev" onclick="goToPrev()">Back</button>
       <button class="btn-nav-action btn-next-step" id="btn-next" onclick="goToNext()">Next</button>
-      <button class="btn-nav-action btn-complete-exam" id="btn-finish-exam" onclick="finishExam()">Finish Test</button>
     </div>
   </footer>
 
+  <!-- MULTI-LEVEL QUESTION CURRICULUM -->
+  <script src="questions_database.js"></script>
   <script>
-    /* COMPREHENSIVE CURATED SAT QUESTIONS */
-    const QUESTIONS = [
-      {
-        id: 1,
-        section: "Reading & Writing",
-        domain: "Craft & Structure",
-        skill: "Words in Context",
-        stem: "Ecologists studying the regeneration of temperate pine forests noted that controlled burns did not deplete topsoil nutrients as previously feared; rather, post-fire soil analyses demonstrated that the ash deposit served to ______ the presence of bioavailable potassium and phosphorus, accelerating seedling growth.",
-        prompt: "Which choice completes the text with the most logical and precise word?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "mitigate" },
-          { letter: "B", text: "augment" },
-          { letter: "C", text: "obscure" },
-          { letter: "D", text: "fabricate" }
-        ],
-        correct: "B",
-        explanation: "The transition 'rather' indicates a direct contrast to 'deplete.' The sentence concludes with 'accelerating seedling growth.' Therefore, the ash increased nutrient availability. 'Augment' means to increase, expand, or enlarge.",
-        hack: "Rule: Contrast transition ('rather') + positive outcome ('accelerating') = word MUST mean increase/improve."
-      },
-      {
-        id: 2,
-        section: "Reading & Writing",
-        domain: "Craft & Structure",
-        skill: "Words in Context (Hard Module 2)",
-        stem: "The biographer refused to depict the diplomat as a one-dimensional hero, recognizing that historical legacy is rarely unblemished; instead, she provided a nuanced account that did not shy away from the diplomat’s ______ tendencies during bilateral treaty negotiations.",
-        prompt: "Which choice completes the text with the most logical and precise word?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "duplicitous" },
-          { letter: "B", text: "magnanimous" },
-          { letter: "C", text: "exemplary" },
-          { letter: "D", text: "fortuitous" }
-        ],
-        correct: "A",
-        explanation: "The text explains that the diplomat was not a 'one-dimensional hero' and that historical legacy is 'rarely unblemished.' Therefore, the missing word must be a critical/flawed trait. 'Duplicitous' means deceitful, two-faced, or dishonest.",
-        hack: "Rule: 'Rarely unblemished' + 'did not shy away from' = look for the flawed/negative character trait."
-      },
-      {
-        id: 3,
-        section: "Reading & Writing",
-        domain: "Information & Ideas",
-        skill: "Central Ideas & Details",
-        stem: "Many neuroscientists long adhered to the hypothesis that adult neurogenesis—the birth of new neurons—ceased completely in the mammalian brain once maturity was reached. However, recent histological studies using carbon-14 dating on post-mortem human hippocampus samples have detected measurable rates of new cell integration throughout adulthood. While the exact cognitive role of these newly formed neurons remains subject to vigorous debate, the structural plasticity of the human brain is demonstrably more enduring than previously acknowledged.",
-        prompt: "Which choice best states the main idea of the text?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "Adult neurogenesis has been proven to reverse memory impairment in aging mammals." },
-          { letter: "B", text: "Recent empirical findings challenge the traditional belief that neuron production ends in adulthood." },
-          { letter: "C", text: "Carbon-14 dating is the only reliable methodology for analyzing hippocampal neurogenesis." },
-          { letter: "D", text: "The structural plasticity of the mammalian brain decreases linearly across an organism's lifespan." }
-        ],
-        correct: "B",
-        explanation: "The passage sets up the traditional view (neurogenesis ceases in adulthood), introduces the counter-evidence ('However, recent histological studies... detected measurable rates... throughout adulthood'), and concludes that brain plasticity endures longer than previously acknowledged.",
-        hack: "Formula: Old Belief ('long adhered') + Pivot ('However') = The Main Idea is the new discovery."
-      },
-      {
-        id: 4,
-        section: "Reading & Writing",
-        domain: "Craft & Structure",
-        skill: "Cross-Text Connections",
-        stem: "Text 1\nAdvocates of vertical farming argue that cultivating crops indoors within stacked urban layers is the most viable solution to agricultural land degradation. By utilizing automated LED lighting spectra and closed-loop hydroponic systems, vertical farms consume up to 95% less water than traditional open-field agriculture while completely eliminating chemical pesticide runoff into local waterways.\n\nText 2\nAgricultural economist Dr. Marcus Vance cautions that vertical farming’s eco-friendly reputation overlooks severe thermodynamic limitations. The electrical energy required to power artificial lighting arrays and high-capacity climate-control equipment generates an immense carbon footprint unless the facility is tied directly to dedicated zero-emission renewable energy grids, which are currently cost-prohibitive in most metropolitan centers.",
-        prompt: "Based on the texts, how would Dr. Vance (Text 2) most likely respond to the claims made in Text 1 regarding environmental benefits?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "By disputing that hydroponic facilities achieve significant reductions in agricultural water consumption." },
-          { letter: "B", text: "By arguing that pesticide runoff is less detrimental to waterways than commonly reported." },
-          { letter: "C", text: "By asserting that operational energy demands may offset the ecological gains highlighted by proponents." },
-          { letter: "D", text: "By recommending that vertical farming initiatives be moved strictly to rural locations." }
-        ],
-        correct: "C",
-        explanation: "Text 1 claims major eco-benefits (water savings, zero runoff). Text 2 counters that the massive electrical energy for lighting and AC creates an immense carbon footprint that diminishes these advantages.",
-        hack: "Cross-Text Tip: Look for how Author 2's specific critique directly qualifies or undermines Author 1's main claim."
-      },
-      {
-        id: 5,
-        section: "Reading & Writing",
-        domain: "Information & Ideas",
-        skill: "Command of Evidence (Quantitative)",
-        stem: "Average Foraging Flight Time and Nectar Yield of Bombus impatiens Across Habitat Types:\n\n• Fragmented Urban: Flight 420m | Duration 38.4 min | Nectar Yield 14.2 mg\n• Continuous Prairie: Flight 185m | Duration 19.6 min | Nectar Yield 31.8 mg\n• Monoculture Agroecosystem: Flight 510m | Duration 44.2 min | Nectar Yield 11.5 mg\n• Suburban Floral Corridor: Flight 240m | Duration 22.1 min | Nectar Yield 27.6 mg\n\nAn entomologist hypothesizes that habitat fragmentation forces Bombus impatiens to expend disproportionate energetic reserves searching for floral patches, thereby reducing net foraging efficiency.",
-        prompt: "Which choice from the data most directly supports the entomologist's hypothesis?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "Bees in the Continuous Prairie traveled shorter flight distances (185 m) than bees in the Suburban Floral Corridor (240 m)." },
-          { letter: "B", text: "Bees in the Fragmented Urban habitat required longer foraging durations (38.4 min) yet collected less than half the mean nectar yield (14.2 mg) of bees in the Continuous Prairie (31.8 mg)." },
-          { letter: "C", text: "Bees in the Monoculture Agroecosystem experienced the longest foraging duration (44.2 min) among all surveyed groups." },
-          { letter: "D", text: "The mean nectar yield in the Suburban Floral Corridor was 27.6 mg, which exceeded the yield in the Fragmented Urban habitat." }
-        ],
-        correct: "B",
-        explanation: "The hypothesis demands a direct link between energetic exertion (duration/flight) and efficiency loss (reduced nectar). Choice B pairs longer duration with less than half the nectar yield compared to continuous prairie.",
-        hack: "Quantitative Evidence Tip: Pick the choice that pairs the 'Cause' (longer duration) with the 'Effect' (halved nectar), not just a single isolated metric."
-      },
-      {
-        id: 6,
-        section: "Reading & Writing",
-        domain: "Information & Ideas",
-        skill: "Inferences",
-        stem: "In marine biology, the 'coral bleaching threshold' refers to sustained thermal anomalies that cause scleractinian corals to expel their symbiotic dinoflagellates (Symbiodiniaceae). Recent laboratory trials on Acropora hyacinthus colonies native to shallow reef flats with extreme diurnal temperature fluctuations revealed that these corals harbor epigenetic modifications that modulate heat-shock protein expression. When exposed to heat stress exceeding historical reef averages by 2.5°C, these pre-conditioned colonies retained their symbionts and exhibited minimal chlorophyll degradation, suggesting that ______",
-        prompt: "Which choice most logically completes the text?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "thermal stress inevitably leads to permanent loss of calcification capacity in shallow reef corals." },
-          { letter: "B", text: "prior exposure to microclimate thermal variability may confer heightened resilience against elevated ocean temperatures." },
-          { letter: "C", text: "dinoflagellate expulsion is solely triggered by changes in salinity rather than ocean temperature fluctuations." },
-          { letter: "D", text: "Acropora hyacinthus will migrate away from shallow reef flats into deep pelagic ocean ecosystems." }
-        ],
-        correct: "B",
-        explanation: "The trial showed that corals from environments with 'extreme diurnal temperature fluctuations' survived a +2.5°C heat spike with minimal damage due to epigenetic changes. Logically, prior exposure to temperature swings builds resilience.",
-        hack: "Inference Rule: Stay conservative and directly tied to the experiment. Avoid extreme words like 'inevitably' or out-of-scope concepts like 'salinity' or 'coral migration'."
-      },
-      {
-        id: 7,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Sentence Boundaries",
-        stem: "Biochemist Katalin Karikó spent decades refining the synthetic modification of messenger ______ her pioneering work on pseudouridine substitution directly prevented lethal inflammatory responses and enabled the rapid development of modern mRNA vaccines.",
-        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "RNA, nevertheless," },
-          { letter: "B", text: "RNA," },
-          { letter: "C", text: "RNA;" },
-          { letter: "D", text: "RNA" }
-        ],
-        correct: "C",
-        explanation: "Two complete independent clauses: 'Katalin Karikó spent decades...' and 'her pioneering work directly prevented...' Joining two independent clauses requires a semicolon, period, or comma + FANBOYS. Option C correctly uses a semicolon.",
-        hack: "Grammar Rule: Semicolon (;) = Period (.) = Comma + FANBOYS. A comma alone (Option B) is an illegal comma splice."
-      },
-      {
-        id: 8,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Punctuation & Modifiers",
-        stem: "Astronomer Cecilia Payne-Gaposchkin, having deduced that hydrogen and helium are the primary constituents of ______ overturned the prevailing scientific consensus that stars possessed the same elemental composition as Earth.",
-        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "stars," },
-          { letter: "B", text: "stars" },
-          { letter: "C", text: "stars;" },
-          { letter: "D", text: "stars:" }
-        ],
-        correct: "A",
-        explanation: "The parenthetical modifier begins with a comma after the subject: 'Astronomer Cecilia Payne-Gaposchkin, having deduced that hydrogen and helium are the primary constituents of stars, overturned...' The nonrestrictive participial phrase must be closed with a matching comma before the main verb 'overturned.'",
-        hack: "Modifier Rule: A nonessential interrupting phrase opened with a comma MUST be closed with a comma before the main verb."
-      },
-      {
-        id: 9,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Subject-Verb Agreement",
-        stem: "The collection of fossilized marine bivalves, along with several amber fragments containing prehistoric insect inclusions, ______ currently housed in the university’s Department of Earth and Planetary Sciences.",
-        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "are" },
-          { letter: "B", text: "were" },
-          { letter: "C", text: "is" },
-          { letter: "D", text: "have been" }
-        ],
-        correct: "C",
-        explanation: "The true grammatical subject is 'The collection' (singular). Words inside prepositional phrases ('of fossilized marine bivalves') or additive phrases ('along with...') do not affect the subject number. A singular subject requires the singular verb 'is.'",
-        hack: "Subject-Verb Hack: Cross out everything between commas and prepositions! '[The collection] ... is currently housed.'"
-      },
-      {
-        id: 10,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Modifier Placement",
-        stem: "Originating in the highlands of southwestern Ethiopia, ______",
-        prompt: "Which choice completes the text so that it conforms to the conventions of Standard English?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "coffee trade networks expanded rapidly across the Arabian Peninsula during the fifteenth century." },
-          { letter: "B", text: "the Arabian Peninsula witnessed the rapid expansion of coffee cultivation during the fifteenth century." },
-          { letter: "C", text: "the Coffea arabica plant was cultivated and traded throughout the Arabian Peninsula in the fifteenth century." },
-          { letter: "D", text: "traders transported Coffea arabica seeds across the Arabian Peninsula in the fifteenth century." }
-        ],
-        correct: "C",
-        explanation: "The introductory modifier 'Originating in the highlands of southwestern Ethiopia' must immediately touch the entity that biologically originated in Ethiopia: 'the Coffea arabica plant.' Trade networks (A), the Arabian Peninsula (B), and traders (D) did not originate in the highlands.",
-        hack: "Dangling Modifier Hack: Ask 'WHO or WHAT did the action in the opening phrase?' Put that noun immediately after the comma!"
-      },
-      {
-        id: 11,
-        section: "Reading & Writing",
-        domain: "Standard English Conventions",
-        skill: "Transitions",
-        stem: "For centuries, cartographers struggled to project the three-dimensional curvature of the Earth onto a flat surface without distorting either area or shape. In 1569, Gerardus Mercator developed a cylindrical conformal projection that preserved navigational angles, making compass bearings straight lines. ______, the Mercator projection drastically distorts the relative size of landmasses situated near polar latitudes, making Greenland appear equivalent in scale to the continent of Africa.",
-        prompt: "Which choice completes the text with the most logical transition?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "Furthermore," },
-          { letter: "B", text: "However," },
-          { letter: "C", text: "Consequently," },
-          { letter: "D", text: "Specifically," }
-        ],
-        correct: "B",
-        explanation: "The sentence before describes a major strength (preserved navigational angles). The sentence after describes a major flaw (drastically distorts polar landmasses). This is a direct contrast, requiring 'However.'",
-        hack: "Transition Tip: Strength followed by Flaw = Contrast ('However')."
-      },
-      {
-        id: 12,
-        section: "Reading & Writing",
-        domain: "Information & Ideas",
-        skill: "Rhetorical Synthesis",
-        stem: "While researching a topic, a student has taken the following notes:\n• The James Webb Space Telescope (JWST) carries the Near-Infrared Spectrograph (NIRSpec).\n• NIRSpec can observe up to 100 astronomical objects simultaneously using a microshutter array.\n• In 2023, NIRSpec analyzed the atmospheric composition of exoplanet WASP-39b.\n• The transmission spectrum confirmed the presence of carbon dioxide and sulfur dioxide in WASP-39b’s atmosphere.\n• This was the first definitive detection of sulfur dioxide in any exoplanet atmosphere.",
-        prompt: "The student wants to highlight the specific scientific breakthrough achieved by NIRSpec on WASP-39b. Which choice most effectively uses the relevant information to accomplish this goal?",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "Equipped with a microshutter array, the JWST's NIRSpec instrument can analyze up to 100 astronomical bodies at the same time." },
-          { letter: "B", text: "When NIRSpec observed exoplanet WASP-39b, it made the historic first definitive detection of sulfur dioxide in an exoplanetary atmosphere." },
-          { letter: "C", text: "Among its various targets, the James Webb Space Telescope analyzed the atmosphere of exoplanet WASP-39b in 2023." },
-          { letter: "D", text: "Sulfur dioxide and carbon dioxide are both molecules that can be identified via transmission spectra using NIRSpec." }
-        ],
-        correct: "B",
-        explanation: "The prompt specifies the goal: 'highlight the specific scientific breakthrough achieved by NIRSpec on WASP-39b.' Choice B directly states the breakthrough ('the historic first definitive detection of sulfur dioxide in an exoplanetary atmosphere').",
-        hack: "Rhetorical Synthesis Hack: NEVER read all the bullet points first. Read ONLY the prompt instruction, then find the choice that directly answers that exact goal."
-      },
-      {
-        id: 13,
-        section: "Math",
-        domain: "Algebra",
-        skill: "Linear Systems with Constants",
-        stem: "3x - 5y = 14\nkx - 15y = 42\n\nIn the system of equations above, k is a constant. If the system has infinitely many solutions, what is the value of k?",
-        prompt: "Select the correct value of k:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "3" },
-          { letter: "B", text: "6" },
-          { letter: "C", text: "9" },
-          { letter: "D", text: "15" }
-        ],
-        correct: "C",
-        desmosEquation: ["3x - 5y = 14", "kx - 15y = 42"],
-        explanation: "For infinitely many solutions, the two equations represent identical lines. Notice that the y-coefficient (-15) and constant (42) in the second equation are exactly 3 times the first equation (-5 and 14). Therefore, the x-coefficient k must also be 3 times 3: k = 9.",
-        hack: "Desmos Keystrokes:\n1. Type: 3x - 5y = 14\n2. Type: kx - 15y = 42 (add slider for k)\n3. Slide k to 9. The two lines overlap perfectly!"
-      },
-      {
-        id: 14,
-        section: "Math",
-        domain: "Algebra",
-        skill: "Linear Inequality Modeling",
-        stem: "A hospital volunteer coordinator needs to assemble hygiene care packages. Large packages require 4 bottles of antiseptic wash and 6 rolls of bandages. Small packages require 2 bottles of antiseptic wash and 2 rolls of bandages.\n\nThe coordinator has a maximum budget allowance providing no more than 60 bottles of antiseptic wash and 72 rolls of bandages. If the coordinator must prepare at least 8 large packages, what is the maximum number of small packages that can be assembled?",
-        prompt: "Select the maximum number of small packages:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "10" },
-          { letter: "B", text: "12" },
-          { letter: "C", text: "14" },
-          { letter: "D", text: "18" }
-        ],
-        correct: "B",
-        desmosEquation: ["4(8) + 2y <= 60", "6(8) + 2y <= 72"],
-        explanation: "Set large packages L = 8 (minimum). Constraint 1 (wash): 4(8) + 2S <= 60 -> 32 + 2S <= 60 -> 2S <= 28 -> S <= 14. Constraint 2 (bandages): 6(8) + 2S <= 72 -> 48 + 2S <= 72 -> 2S <= 24 -> S <= 12. Both constraints must hold, so S <= 12.",
-        hack: "Desmos Shortcut:\nType: 4(8) + 2y <= 60\nType: 6(8) + 2y <= 72\nThe overlapping region's top bound on the y-axis is y = 12."
-      },
-      {
-        id: 15,
-        section: "Math",
-        domain: "Advanced Math",
-        skill: "Quadratic Trajectory & Vertex",
-        stem: "A model rocket is launched vertically from an elevated platform. Its height above the ground h(t), in feet, t seconds after launch is modeled by the function:\n\nh(t) = -16t^2 + 80t + 96\n\nWhat is the maximum height, in feet, reached by the rocket?",
-        prompt: "Select the maximum height:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "80" },
-          { letter: "B", text: "144" },
-          { letter: "C", text: "196" },
-          { letter: "D", text: "256" }
-        ],
-        correct: "C",
-        desmosEquation: ["y = -16x^2 + 80x + 96"],
-        explanation: "Vertex occurs at t = -b / (2a) = -80 / (2 * -16) = 2.5 seconds. Substitute t = 2.5 into h(t): h(2.5) = -16(2.5)^2 + 80(2.5) + 96 = -100 + 200 + 96 = 196 feet.",
-        hack: "Desmos 5-Second Click:\n1. Type: y = -16x^2 + 80x + 96\n2. Click the peak (vertex) dot with your mouse.\n3. Desmos displays (2.5, 196). Height = y-value = 196!"
-      },
-      {
-        id: 16,
-        section: "Math",
-        domain: "Advanced Math",
-        skill: "Discriminant Analysis",
-        stem: "2x^2 - 8x + c = 0\n\nIn the quadratic equation above, c is a constant. If the equation has exactly one distinct real solution, what is the value of c?",
-        prompt: "Select the value of c:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "-8" },
-          { letter: "B", text: "4" },
-          { letter: "C", text: "8" },
-          { letter: "D", text: "16" }
-        ],
-        correct: "C",
-        desmosEquation: ["y = 2x^2 - 8x + c"],
-        explanation: "A quadratic equation has exactly one real solution when its discriminant equals zero: b^2 - 4ac = 0. (-8)^2 - 4(2)(c) = 0 -> 64 - 8c = 0 -> 8c = 64 -> c = 8.",
-        hack: "Desmos Shortcut:\n1. Type: y = 2x^2 - 8x + c with slider for c.\n2. 'One solution' means the vertex touches the x-axis exactly once.\n3. Slide c to 8, vertex lands on y = 0."
-      },
-      {
-        id: 17,
-        section: "Math",
-        domain: "Advanced Math",
-        skill: "Nonlinear System Intersection",
-        stem: "y = x^2 - 4x + 3\ny = 2x - 2\n\nThe solutions to the system of equations above are (x1, y1) and (x2, y2), where x2 > x1. What is the value of x2 - y1?",
-        prompt: "Select the value of x2 - y1:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "1" },
-          { letter: "B", text: "3" },
-          { letter: "C", text: "5" },
-          { letter: "D", text: "7" }
-        ],
-        correct: "C",
-        desmosEquation: ["y = x^2 - 4x + 3", "y = 2x - 2"],
-        explanation: "Set equations equal: x^2 - 4x + 3 = 2x - 2 -> x^2 - 6x + 5 = 0 -> (x - 1)(x - 5) = 0. x1 = 1, x2 = 5. Plug x1 = 1 into y = 2(1) - 2 = 0. Therefore, y1 = 0. x2 - y1 = 5 - 0 = 5.",
-        hack: "Desmos Click Trick:\n1. Type both equations into Desmos.\n2. Click the two intersection dots: (1, 0) and (5, 8).\n3. x2 = 5, y1 = 0 -> 5 - 0 = 5."
-      },
-      {
-        id: 18,
-        section: "Math",
-        domain: "Advanced Math",
-        skill: "Exponential Modeling & Growth",
-        stem: "A population of beneficial probiotic bacteria in a laboratory culture grows exponentially according to the function P(t) = P0 * b^t, where t is measured in hours. At t = 0, the culture contains 40 bacteria. At t = 3 hours, the culture contains 320 bacteria. How many bacteria will be present in the culture at t = 6 hours?",
-        prompt: "Select the population at t = 6:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "640" },
-          { letter: "B", text: "1,280" },
-          { letter: "C", text: "2,560" },
-          { letter: "D", text: "5,120" }
-        ],
-        correct: "C",
-        desmosEquation: ["y_1 ~ a * b^(x_1)"],
-        explanation: "Initial population P0 = 40. At t = 3, 40 * b^3 = 320 -> b^3 = 8 -> b = 2 (growth factor is 2 every hour). At t = 6, P(6) = 40 * 2^6 = 40 * 64 = 2,560.",
-        hack: "Exponential Pattern Trick: In the first 3 hours, the population grew by 320 / 40 = 8x. In the next 3 hours (from t = 3 to t = 6), it must also grow by 8x: 320 * 8 = 2,560!"
-      },
-      {
-        id: 19,
-        section: "Math",
-        domain: "Advanced Math",
-        skill: "Equivalent Rational Expressions",
-        stem: "Which of the following expressions is equivalent to (3x^2 + 11x - 4) / (x + 4) for all x != -4?",
-        prompt: "Select the equivalent expression:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "3x - 1" },
-          { letter: "B", text: "3x + 1" },
-          { letter: "C", text: "3x - 4" },
-          { letter: "D", text: "x - 1" }
-        ],
-        correct: "A",
-        desmosEquation: ["y = (3x^2 + 11x - 4)/(x + 4)", "y = 3x - 1"],
-        explanation: "Factor numerator: 3x^2 + 11x - 4 = (3x - 1)(x + 4). Divide by (x + 4) yields 3x - 1.",
-        hack: "Desmos Graph Matching:\n1. Type the original expression: y = (3x^2 + 11x - 4)/(x + 4)\n2. Type Choice A: y = 3x - 1\n3. The lines overlap exactly everywhere. Guaranteed correct!"
-      },
-      {
-        id: 20,
-        section: "Math",
-        domain: "Geometry",
-        skill: "Circle Equation & Radius",
-        stem: "x^2 + y^2 - 10x + 6y = 47\n\nThe equation of a circle in the xy-plane is shown above. What is the radius of the circle?",
-        prompt: "Select the radius:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "sqrt(47)" },
-          { letter: "B", text: "7" },
-          { letter: "C", text: "9" },
-          { letter: "D", text: "12" }
-        ],
-        correct: "C",
-        desmosEquation: ["x^2 + y^2 - 10x + 6y = 47"],
-        explanation: "Complete the square: (x - 5)^2 - 25 + (y + 3)^2 - 9 = 47 -> (x - 5)^2 + (y + 3)^2 = 47 + 25 + 9 = 81. Since r^2 = 81, radius r = 9.",
-        hack: "Desmos 10-Second Diameter Trick:\n1. Paste: x^2 + y^2 - 10x + 6y = 47\n2. Click the left edge (-4, -3) and right edge (14, -3).\n3. Distance across = 14 - (-4) = 18. Radius = 18 / 2 = 9!"
-      },
-      {
-        id: 21,
-        section: "Math",
-        domain: "Geometry & Trigonometry",
-        skill: "Complementary Angles",
-        stem: "In right triangle PQR, the measure of angle Q is 90°. If sin(P) = 7/25, what is the value of cos(R)?",
-        prompt: "Select the value of cos(R):",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "7/25" },
-          { letter: "B", text: "24/25" },
-          { letter: "C", text: "7/24" },
-          { letter: "D", text: "25/24" }
-        ],
-        correct: "A",
-        explanation: "In any right triangle where Q is 90°, angles P and R are complementary (P + R = 90°). By definition, sin(P) = cos(90° - P) = cos(R). Therefore, cos(R) = 7/25.",
-        hack: "The Golden SAT Trig Rule: In right triangles, sin(A) = cos(B) ALWAYS. Zero calculation required!"
-      },
-      {
-        id: 22,
-        section: "Math",
-        domain: "Geometry",
-        skill: "Similar Triangles & Area Ratios",
-        stem: "Triangle ABC is similar to triangle DEF, such that vertices A, B, and C correspond to vertices D, E, and F, respectively. The length of side AB is 8 centimeters, and the length of corresponding side DE is 24 centimeters. If the area of triangle ABC is 15 square centimeters, what is the area, in square centimeters, of triangle DEF?",
-        prompt: "Select the area of triangle DEF:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "45" },
-          { letter: "B", text: "90" },
-          { letter: "C", text: "120" },
-          { letter: "D", text: "135" }
-        ],
-        correct: "D",
-        explanation: "Side scale factor k = 24 / 8 = 3. For similar figures, the ratio of areas equals the square of the linear scale factor: k^2 = 3^2 = 9. Area of DEF = 15 * 9 = 135 cm^2.",
-        hack: "Trap Alert: Do not multiply 15 by 3! Area scales as k^2 (9), Volume scales as k^3 (27)."
-      },
-      {
-        id: 23,
-        section: "Math",
-        domain: "Problem Solving & Data Analysis",
-        skill: "Standard Deviation Shift",
-        stem: "Data Set X consists of 7 integers: {12, 15, 18, 21, 24, 27, 30}.\nData Set Y is created by adding 15 to each value in Data Set X: {27, 30, 33, 36, 39, 42, 45}.\n\nWhich statement correctly compares the mean and the standard deviation of Data Set X and Data Set Y?",
-        prompt: "Select the correct statement:",
-        type: "choice",
-        choices: [
-          { letter: "A", text: "The mean of Data Set Y is greater, and the standard deviation of Data Set Y is greater." },
-          { letter: "B", text: "The mean of Data Set Y is greater, and the standard deviation of Data Set Y is equal." },
-          { letter: "C", text: "The mean of Data Set Y is equal, and the standard deviation of Data Set Y is greater." },
-          { letter: "D", text: "Both the mean and standard deviation are equal." }
-        ],
-        correct: "B",
-        explanation: "Adding a constant (+15) shifts every value to the right, so the mean increases by 15. However, standard deviation measures the spread or distance between values. Since every number moved by the exact same amount, the spread is unchanged.",
-        hack: "SAT Statistics Law: Adding/subtracting a constant changes Mean & Median, but NEVER changes Standard Deviation or Range!"
-      },
-      {
-        id: 24,
-        section: "Math",
-        domain: "Algebra",
-        skill: "Rational Equations (Grid-In)",
-        stem: "5 / (x - 2) = 3 / (x + 6)\n\nWhat real value of x satisfies the equation above?",
-        prompt: "Enter the value of x:",
-        type: "gridin",
-        correct: "-18",
-        desmosEquation: ["y = 5/(x - 2)", "y = 3/(x + 6)"],
-        explanation: "Cross-multiply: 5(x + 6) = 3(x - 2) -> 5x + 30 = 3x - 6 -> 2x = -36 -> x = -18.",
-        hack: "Desmos Keystrokes:\n1. Type: y = 5/(x - 2)\n2. Type: y = 3/(x + 6)\n3. Zoom out to find where the graphs cross: (-18, -0.25). The answer is x = -18."
-      },
-      {
-        id: 25,
-        section: "Math",
-        domain: "Problem Solving & Data Analysis",
-        skill: "Successive Percent Change (Grid-In)",
-        stem: "A diagnostic medical lab kit is priced at k dollars. During a vendor promotion in October, the price is reduced by 20%. In November, the promotional price is increased by 25%. The final price in November is equal to m * k. What is the value of m?",
-        prompt: "Enter the value of m (as a decimal):",
-        type: "gridin",
-        correct: "1",
-        explanation: "October: Price = k * (1 - 0.20) = 0.80k. November: Price = (0.80k) * (1 + 0.25) = 0.80k * 1.25 = 1.00k. Therefore m = 1 (or 1.0).",
-        hack: "Fraction Hack: 20% down = 4/5. 25% up = 5/4. (4/5) * (5/4) = 1. Back to exactly 100%!"
-      }
-    ];
-
-    /* APP STATE */
-    let currentQIndex = 12; // Start on Question 13 (Math) as requested!
+    /* STATE MANAGEMENT */
+    let activeTestKey = "day1";
+    let activeQuestions = [];
+    let currentQIndex = 0;
     let studentAnswers = {};
     let flaggedSet = new Set();
-    let currentMode = "tutor";
     let timerSeconds = 35 * 60;
     let timerActive = true;
-    let desmosCalcInstance = null;
     let isDesmosOpen = false;
+    let isChatOpen = false;
+    let desmosCalcInstance = null;
 
-    // DRAG STATE FOR FLOATING DESMOS
-    let isDragging = false;
-    let dragStartX, dragStartY, initialWinX, initialWinY;
+    // Load mistake bank from localStorage
+    let storedMistakes = JSON.parse(localStorage.getItem("sat_mistakes") || "[]");
 
     window.addEventListener("DOMContentLoaded", () => {
-      initMatrixButtons();
-      renderQuestion(currentQIndex);
-      initTimerCountdown();
+      loadTest(activeTestKey);
+      initTimer();
       initDesmosAPI();
-      setupDraggableWindow();
+      setupDraggableWindows();
+      updateMistakeCountBadge();
     });
 
-    function initDesmosAPI() {
-      try {
-        const elt = document.getElementById('desmos-calculator-container');
-        if (window.Desmos) {
-          desmosCalcInstance = Desmos.GraphingCalculator(elt, {
-            keypad: true,
-            expressions: true,
-            settingsMenu: true,
-            zoomButtons: true
-          });
+    function loadTest(key) {
+      activeTestKey = key;
+      studentAnswers = {};
+      flaggedSet.clear();
+
+      if (key === "mistakes") {
+        activeQuestions = storedMistakes;
+        document.getElementById("active-day-label").textContent = `🔁 Mistake Bank (${activeQuestions.length} Qs)`;
+        if (activeQuestions.length === 0) {
+          alert("Your Mistake Bank is currently empty! Answer questions in Day 1–5, and any questions you miss will automatically appear here for review.");
+          switchDailyTest("day1");
+          return;
         }
-      } catch (err) {
-        console.warn("Desmos initialization note:", err);
-      }
-    }
-
-    /* SETUP DRAGGABLE DESMOS WINDOW */
-    function setupDraggableWindow() {
-      const dragBar = document.getElementById("desmos-drag-bar");
-      const win = document.getElementById("desmos-window");
-
-      dragBar.addEventListener("mousedown", (e) => {
-        isDragging = true;
-        dragStartX = e.clientX;
-        dragStartY = e.clientY;
-        const rect = win.getBoundingClientRect();
-        initialWinX = rect.left;
-        initialWinY = rect.top;
-        document.addEventListener("mousemove", onDragMove);
-        document.addEventListener("mouseup", onDragEnd);
-      });
-
-      function onDragMove(e) {
-        if (!isDragging) return;
-        const dx = e.clientX - dragStartX;
-        const dy = e.clientY - dragStartY;
-        win.style.left = (initialWinX + dx) + "px";
-        win.style.top = (initialWinY + dy) + "px";
-        win.style.right = "auto";
+      } else {
+        activeQuestions = CURRICULUM_DATA[key].questions;
+        document.getElementById("active-day-label").textContent = CURRICULUM_DATA[key].title;
       }
 
-      function onDragEnd() {
-        isDragging = false;
-        document.removeEventListener("mousemove", onDragMove);
-        document.removeEventListener("mouseup", onDragEnd);
+      currentQIndex = 0;
+      initMatrixButtons();
+      renderQuestion(0);
+    }
+
+    function switchDailyTest(key) {
+      closeCurriculumModal();
+      loadTest(key);
+    }
+
+    function openCurriculumModal() {
+      document.getElementById("curriculum-modal").style.display = "flex";
+      updateMistakeCountBadge();
+    }
+
+    function closeCurriculumModal(e) {
+      document.getElementById("curriculum-modal").style.display = "none";
+    }
+
+    function updateMistakeCountBadge() {
+      const badge = document.getElementById("mistake-bank-count");
+      if (badge) {
+        badge.textContent = `${storedMistakes.length} questions to master`;
       }
-    }
-
-    function toggleDesmos() {
-      const win = document.getElementById("desmos-window");
-      const btn = document.getElementById("btn-toggle-calculator");
-      isDesmosOpen = !isDesmosOpen;
-      win.style.display = isDesmosOpen ? "flex" : "none";
-      btn.classList.toggle("active", isDesmosOpen);
-      if (isDesmosOpen && desmosCalcInstance) {
-        desmosCalcInstance.resize();
-      }
-    }
-
-    function launchDesmosShortcut() {
-      if (!isDesmosOpen) toggleDesmos();
-      const q = QUESTIONS[currentQIndex];
-      if (desmosCalcInstance && q.desmosEquation) {
-        desmosCalcInstance.setBlank();
-        q.desmosEquation.forEach((expr, i) => {
-          desmosCalcInstance.setExpression({ id: 'eq_' + i, latex: expr });
-        });
-      }
-    }
-
-    function initTimerCountdown() {
-      setInterval(() => {
-        if (timerSeconds > 0) {
-          timerSeconds--;
-          const m = Math.floor(timerSeconds / 60);
-          const s = timerSeconds % 60;
-          document.getElementById("timer-text").textContent = 
-            `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
-        }
-      }, 1000);
-    }
-
-    function toggleTimer() {
-      timerActive = !timerActive;
-      const t = document.getElementById("timer-text");
-      const b = document.getElementById("btn-toggle-time");
-      t.style.visibility = timerActive ? "visible" : "hidden";
-      b.textContent = timerActive ? "Hide" : "Show";
-    }
-
-    function switchMode(mode) {
-      currentMode = mode;
-      document.getElementById("tutor-controls").style.display = (mode === "tutor") ? "flex" : "none";
-      document.getElementById("feedback-panel").style.display = "none";
     }
 
     function initMatrixButtons() {
       const scroll = document.getElementById("q-matrix-scroll");
       scroll.innerHTML = "";
-      QUESTIONS.forEach((q, idx) => {
+      activeQuestions.forEach((_, idx) => {
         const btn = document.createElement("button");
         btn.className = "btn-matrix-q";
         btn.id = "mat-btn-" + idx;
@@ -2022,7 +1319,7 @@
     }
 
     function syncMatrixStyles() {
-      QUESTIONS.forEach((_, idx) => {
+      activeQuestions.forEach((_, idx) => {
         const btn = document.getElementById("mat-btn-" + idx);
         if (!btn) return;
         btn.className = "btn-matrix-q";
@@ -2034,29 +1331,19 @@
 
     function renderQuestion(idx) {
       currentQIndex = idx;
-      const q = QUESTIONS[idx];
+      const q = activeQuestions[idx];
 
-      // Update Header & Badges
-      document.getElementById("section-pill").textContent = q.section;
       document.getElementById("domain-badge").textContent = q.domain;
       document.getElementById("skill-badge").textContent = q.skill;
-      document.getElementById("q-number-indicator").textContent = `Question ${idx + 1} of ${QUESTIONS.length}`;
-
-      // Stem & Prompt
+      document.getElementById("q-number-indicator").textContent = `Question ${idx + 1} of ${activeQuestions.length}`;
       document.getElementById("stem-text").textContent = q.stem;
       document.getElementById("prompt-text").textContent = q.prompt;
-
-      // Review checkbox
       document.getElementById("flag-checkbox").checked = flaggedSet.has(idx);
-
-      // Hide Feedback
       document.getElementById("feedback-panel").style.display = "none";
 
-      // Desmos auto button in tutor mode
       const autoDesmos = document.getElementById("btn-auto-solve");
-      autoDesmos.style.display = (q.desmosEquation && currentMode === "tutor") ? "inline-flex" : "none";
+      autoDesmos.style.display = q.desmosEquation ? "inline-flex" : "none";
 
-      // Render Multiple Choice or Gridin
       const stack = document.getElementById("choices-stack");
       const gridCard = document.getElementById("gridin-card");
 
@@ -2069,7 +1356,6 @@
           const card = document.createElement("div");
           card.className = "choice-card";
           if (studentAnswers[idx] === ch.letter) card.classList.add("selected");
-
           card.innerHTML = `
             <div class="letter-avatar">${ch.letter}</div>
             <div class="choice-body-text">${ch.text}</div>
@@ -2080,16 +1366,11 @@
       } else {
         stack.style.display = "none";
         gridCard.style.display = "block";
-        const box = document.getElementById("gridin-input");
-        box.value = studentAnswers[idx] || "";
+        document.getElementById("gridin-input").value = studentAnswers[idx] || "";
       }
 
-      // Prev / Next button state
       document.getElementById("btn-prev").disabled = (idx === 0);
-      const isFinal = (idx === QUESTIONS.length - 1);
-      document.getElementById("btn-next").style.display = isFinal ? "none" : "block";
-      document.getElementById("btn-finish-exam").style.display = isFinal ? "block" : "none";
-
+      document.getElementById("btn-next").disabled = (idx === activeQuestions.length - 1);
       syncMatrixStyles();
     }
 
@@ -2119,11 +1400,11 @@
     }
 
     function goToNext() {
-      if (currentQIndex < QUESTIONS.length - 1) renderQuestion(currentQIndex + 1);
+      if (currentQIndex < activeQuestions.length - 1) renderQuestion(currentQIndex + 1);
     }
 
     function verifyAnswer() {
-      const q = QUESTIONS[currentQIndex];
+      const q = activeQuestions[currentQIndex];
       const ans = studentAnswers[currentQIndex];
       const panel = document.getElementById("feedback-panel");
       const title = document.getElementById("feedback-title");
@@ -2132,7 +1413,7 @@
       const hackBox = document.getElementById("hack-box");
 
       if (ans === undefined || ans === "") {
-        alert("Please pick or type an answer first!");
+        alert("Please select or enter an answer first!");
         return;
       }
 
@@ -2143,7 +1424,9 @@
       if (isCorrect) {
         title.innerHTML = `<span>✓</span> Excellent work, Hamna! (Correct: ${q.correct})`;
       } else {
-        title.innerHTML = `<span>✕</span> Coach's Correction: Your answer was ${ans}. The correct answer is <strong>${q.correct}</strong>.`;
+        title.innerHTML = `<span>✕</span> Coach's Correction: You picked ${ans}. The correct answer is <strong>${q.correct}</strong>.`;
+        // Save to mistake bank
+        saveToMistakeBank(q);
       }
 
       body.textContent = q.explanation;
@@ -2156,120 +1439,58 @@
       }
     }
 
-    function finishExam() {
-      document.getElementById("main-test-view").style.display = "none";
-      document.querySelector("footer").style.display = "none";
-      document.getElementById("diagnostic-screen").style.display = "flex";
+    function saveToMistakeBank(q) {
+      if (!storedMistakes.some(m => m.id === q.id && m.domain === q.domain)) {
+        storedMistakes.push(q);
+        localStorage.setItem("sat_mistakes", JSON.stringify(storedMistakes));
+        updateMistakeCountBadge();
+      }
+    }
 
-      let totalRight = 0, rwRight = 0, mathRight = 0;
-      const tbody = document.getElementById("diag-summary-body");
-      tbody.innerHTML = "";
-
-      QUESTIONS.forEach((q, idx) => {
-        const uAns = studentAnswers[idx] || "Unanswered";
-        const isRight = (String(uAns).trim().toUpperCase() === String(q.correct).trim().toUpperCase());
-        if (isRight) {
-          totalRight++;
-          if (q.section === "Reading & Writing") rwRight++;
-          else mathRight++;
+    /* DESMOS CALCULATOR API */
+    function initDesmosAPI() {
+      try {
+        const elt = document.getElementById('desmos-calculator-container');
+        if (window.Desmos) {
+          desmosCalcInstance = Desmos.GraphingCalculator(elt, {
+            keypad: true,
+            expressions: true,
+            settingsMenu: true,
+            zoomButtons: true
+          });
         }
-
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${idx + 1}</td>
-          <td>${q.section}</td>
-          <td>${q.skill}</td>
-          <td><strong style="color: ${isRight ? '#059669' : '#e11d48'}">${uAns}</strong></td>
-          <td><strong>${q.correct}</strong></td>
-          <td>${isRight ? '✅ Correct' : '❌ Missed'}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      document.getElementById("final-total-score").textContent = `${totalRight} / 25`;
-      document.getElementById("final-rw-score").textContent = `${rwRight} / 12`;
-      document.getElementById("final-math-score").textContent = `${mathRight} / 13`;
-
-      const ratio = totalRight / 25;
-      let estRange = "1180–1260";
-      if (ratio >= 0.90) estRange = "1460–1540";
-      else if (ratio >= 0.80) estRange = "1380–1450";
-      else if (ratio >= 0.65) estRange = "1290–1360";
-      document.getElementById("final-est-sat").textContent = estRange;
+      } catch (err) {
+        console.warn("Desmos note:", err);
+      }
     }
 
-    function copyResultsForCoach() {
-      let r = `=== HAMNA'S DIGITAL SAT DIAGNOSTIC PERFORMANCE ===\n`;
-      r += `Total Score: ${document.getElementById("final-total-score").textContent}\n`;
-      r += `Reading & Writing: ${document.getElementById("final-rw-score").textContent}\n`;
-      r += `Math: ${document.getElementById("final-math-score").textContent}\n`;
-      r += `Projected Range: ${document.getElementById("final-est-sat").textContent}\n\n`;
-      r += `QUESTION DETAILS:\n`;
-
-      QUESTIONS.forEach((q, idx) => {
-        const uAns = studentAnswers[idx] || "Unanswered";
-        const isRight = (String(uAns).trim().toUpperCase() === String(q.correct).trim().toUpperCase());
-        r += `Q${idx + 1} [${q.section} - ${q.skill}]: Given = ${uAns} | Correct = ${q.correct} -> ${isRight ? "PASS" : "FAIL"}\n`;
-      });
-
-      r += `\nPlease review my diagnostic, explain why I missed my incorrect questions, and give me practice problems!`;
-
-      navigator.clipboard.writeText(r).then(() => {
-        const note = document.getElementById("sync-success-note");
-        note.style.display = "block";
-        setTimeout(() => { note.style.display = "none"; }, 4000);
-      });
+    function toggleDesmos() {
+      const win = document.getElementById("desmos-window");
+      const btn = document.getElementById("btn-toggle-calculator");
+      isDesmosOpen = !isDesmosOpen;
+      win.style.display = isDesmosOpen ? "flex" : "none";
+      btn.classList.toggle("active", isDesmosOpen);
+      if (isDesmosOpen && desmosCalcInstance) desmosCalcInstance.resize();
     }
 
-    function openReferenceSheet() {
-      document.getElementById("ref-modal-backdrop").style.display = "flex";
+    function launchDesmosShortcut() {
+      if (!isDesmosOpen) toggleDesmos();
+      const q = activeQuestions[currentQIndex];
+      if (desmosCalcInstance && q.desmosEquation) {
+        desmosCalcInstance.setBlank();
+        q.desmosEquation.forEach((expr, i) => {
+          desmosCalcInstance.setExpression({ id: 'eq_' + i, latex: expr });
+        });
+      }
     }
 
-    function closeReferenceSheet(e) {
-      document.getElementById("ref-modal-backdrop").style.display = "none";
-    }
-
-    /* LIVE AI COACH CHAT LOGIC */
-    let isChatOpen = false;
-    let isChatDragging = false;
-    let chatDragStartX, chatDragStartY, initialChatX, initialChatY;
-
+    /* AI COACH LIVE CHAT */
     function toggleChatDrawer() {
       const win = document.getElementById("chat-window");
       const btn = document.getElementById("btn-toggle-chat");
       isChatOpen = !isChatOpen;
       win.style.display = isChatOpen ? "flex" : "none";
       btn.classList.toggle("active", isChatOpen);
-      if (isChatOpen) {
-        document.getElementById("chat-input-field").focus();
-      }
-    }
-
-    function setupChatDraggable() {
-      const bar = document.getElementById("chat-drag-bar");
-      const win = document.getElementById("chat-window");
-      if (!bar || !win) return;
-      bar.addEventListener("mousedown", (e) => {
-        isChatDragging = true;
-        chatDragStartX = e.clientX;
-        chatDragStartY = e.clientY;
-        const rect = win.getBoundingClientRect();
-        initialChatX = rect.left;
-        initialChatY = rect.top;
-        document.addEventListener("mousemove", onChatDrag);
-        document.addEventListener("mouseup", onChatEnd);
-      });
-      function onChatDrag(e) {
-        if (!isChatDragging) return;
-        win.style.left = (initialChatX + (e.clientX - chatDragStartX)) + "px";
-        win.style.top = (initialChatY + (e.clientY - chatDragStartY)) + "px";
-        win.style.right = "auto";
-      }
-      function onChatEnd() {
-        isChatDragging = false;
-        document.removeEventListener("mousemove", onChatDrag);
-        document.removeEventListener("mouseup", onChatEnd);
-      }
     }
 
     function appendChatMessage(sender, text) {
@@ -2295,36 +1516,88 @@
       appendChatMessage("student", msg);
       input.value = "";
 
-      const currentQ = currentQIndex + 1;
+      const currentQ = activeQuestions[currentQIndex];
       const currentAns = studentAnswers[currentQIndex] || "";
 
-      // Send to local backend API
       fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          question_id: currentQ,
+          question_id: currentQ.id || currentQIndex + 1,
           user_choice: currentAns,
           student_message: msg
         })
       })
       .then(res => res.json())
       .then(data => {
-        if (data && data.reply) {
-          appendChatMessage("coach", data.reply);
-        } else {
-          appendChatMessage("coach", "I'm right here with you, Hamna! Check the explanation on your card or try the Desmos shortcut.");
-        }
+        if (data && data.reply) appendChatMessage("coach", data.reply);
       })
-      .catch(err => {
-        appendChatMessage("coach", "Connected live! For Question " + currentQ + ": check your formula and verify on Desmos!");
+      .catch(() => {
+        appendChatMessage("coach", `Connected! For this question on ${currentQ.skill}: remember to check your formulas and test with Desmos!`);
       });
     }
 
-    // Call setupChatDraggable on load
-    window.addEventListener("DOMContentLoaded", () => {
-      setupChatDraggable();
-    });
+    /* DRAGGABLE MODALS SETUP */
+    function setupDraggableWindows() {
+      makeDraggable("desmos-drag-bar", "desmos-window");
+      makeDraggable("chat-drag-bar", "chat-window");
+    }
+
+    function makeDraggable(barId, winId) {
+      const bar = document.getElementById(barId);
+      const win = document.getElementById(winId);
+      if (!bar || !win) return;
+      let isDragging = false, startX, startY, initX, initY;
+
+      bar.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        const rect = win.getBoundingClientRect();
+        initX = rect.left;
+        initY = rect.top;
+        document.addEventListener("mousemove", onDrag);
+        document.addEventListener("mouseup", onStop);
+      });
+
+      function onDrag(e) {
+        if (!isDragging) return;
+        win.style.left = (initX + (e.clientX - startX)) + "px";
+        win.style.top = (initY + (e.clientY - startY)) + "px";
+        win.style.right = "auto";
+      }
+
+      function onStop() {
+        isDragging = false;
+        document.removeEventListener("mousemove", onDrag);
+        document.removeEventListener("mouseup", onStop);
+      }
+    }
+
+    /* TIMER */
+    function initTimer() {
+      setInterval(() => {
+        if (timerSeconds > 0) {
+          timerSeconds--;
+          const m = Math.floor(timerSeconds / 60);
+          const s = timerSeconds % 60;
+          document.getElementById("timer-text").textContent = 
+            `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+        }
+      }, 1000);
+    }
+
+    function toggleTimer() {
+      timerActive = !timerActive;
+      const t = document.getElementById("timer-text");
+      const b = document.getElementById("btn-toggle-time");
+      t.style.visibility = timerActive ? "visible" : "hidden";
+      b.textContent = timerActive ? "Hide" : "Show";
+    }
+
+    function openReferenceSheet() {
+      alert("Geometry Reference:\n• Circle: Area = πr², Circumference = 2πr\n• Triangle: Area = 1/2 bh, Sum of angles = 180°\n• Pythagorean Theorem: a² + b² = c²\n• Special Right: 30-60-90 (x : x√3 : 2x) & 45-45-90 (s : s : s√2)");
+    }
   </script>
 </body>
 </html>
