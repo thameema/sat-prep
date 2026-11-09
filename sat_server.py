@@ -190,7 +190,7 @@ def generate_coach_response(q_id, user_choice, student_msg, student_name="", que
     # Merge rich question_data sent directly from the frontend
     if isinstance(question_data, dict):
         merged = dict(q_data)
-        for k in ("section", "domain", "skill", "stem", "prompt", "correct", "explanation", "hack", "choices", "desmosEquation", "trap_breakdown"):
+        for k in ("section", "domain", "skill", "difficulty", "stem", "prompt", "correct", "explanation", "hack", "choices", "desmosEquation", "trap_breakdown", "videoTutorial"):
             if question_data.get(k) is not None:
                 merged[k] = question_data[k]
         if not merged.get("rule") and question_data.get("hack"):
@@ -200,16 +200,23 @@ def generate_coach_response(q_id, user_choice, student_msg, student_name="", que
         q_data = merged
 
     if not q_data:
-        return f"I'm right here with you{name_str}! Click any question in the test and tap **💡 Explain Rule**, **⚡ Desmos Trick**, or **⚠️ What's the trap?** for instant coaching."
+        return f"Select a question in the workspace and choose **Derivation**, **1600 Protocol**, **Trap Analysis**, or **Hint** for targeted coaching."
 
     q_num_label = f"Question {question_number}" if question_number else f"Question {lookup_id}"
     skill_label = q_data.get("skill", "SAT Concept")
+    diff_label = q_data.get("difficulty", "")
+    header_suffix = f" ({skill_label} · {diff_label})" if diff_label else f" ({skill_label})"
     correct_ans = str(q_data.get("correct", "")).strip()
     explanation = q_data.get("explanation", "")
     rule_text = q_data.get("rule") or q_data.get("hack") or ""
     desmos_eqs = q_data.get("desmosEquation") or ([] if not q_data.get("desmos") else [q_data["desmos"]])
     traps = q_data.get("trap_breakdown") or {}
     choices = q_data.get("choices") or []
+    video = q_data.get("videoTutorial") or {}
+
+    video_line = ""
+    if isinstance(video, dict) and video.get("url"):
+        video_line = f"\n\n**Video Tutorial:** [{video.get('title', 'Watch Lesson')}]({video.get('url')}) ({video.get('channel', 'YouTube')})"
 
     # Check if student typed a single letter A/B/C/D in chat to test an answer
     effective_choice = str(user_choice or "").strip().upper()
@@ -218,68 +225,74 @@ def generate_coach_response(q_id, user_choice, student_msg, student_name="", que
 
     is_correct = bool(effective_choice and effective_choice == correct_ans.upper())
 
-    # 1. Focused response for "What's the trap?"
+    # 1. Focused response for "Trap Analysis"
     if "trap" in lower_msg or "distractor" in lower_msg or "wrong" in lower_msg:
-        reply = f"⚠️ **College Board Trap Alert — {q_num_label} ({skill_label}):**\n\n"
+        reply = f"**Distractor & Trap Analysis — {q_num_label}{header_suffix}**\n\n"
         if traps:
             for opt, desc in traps.items():
-                reply += f"• **Choice {opt}:** {desc}\n"
+                reply += f"• **Option {opt}:** {desc}\n"
             reply += "\n"
         elif choices:
             wrong_opts = [c for c in choices if str(c.get("letter")).upper() != correct_ans.upper()]
-            reply += "Here is how College Board designs the distractors on this problem:\n"
             for c in wrong_opts:
-                reply += f"• **Choice {c.get('letter')} ({c.get('text')}):** Distractor designed to catch students who misapply the {skill_label.lower()} rule or stop one step early.\n"
+                reply += f"• **Option {c.get('letter')} ({c.get('text')}):** Engineered to catch test-takers who misapply the {skill_label.lower()} principle or stop one step early.\n"
             reply += "\n"
-        reply += f"✅ **How to avoid the trap:** {rule_text or explanation}\n\n"
-        reply += f"🎯 **Correct Answer:** **{correct_ans}**"
+        reply += f"**Elimination Rule:** {rule_text or explanation}\n\n"
+        reply += f"**Verified Answer:** **{correct_ans}**{video_line}"
         return reply
 
-    # 2. Focused response for "Desmos Trick" / "Shortcut"
-    if "desmos" in lower_msg or "shortcut" in lower_msg or "trick" in lower_msg:
-        reply = f"⚡ **10-Second Shortcut — {q_num_label} ({skill_label}):**\n\n"
+    # 2. Focused response for "1600 Protocol / Desmos"
+    if "desmos" in lower_msg or "shortcut" in lower_msg or "trick" in lower_msg or "protocol" in lower_msg:
+        reply = f"**1600-Scorer Protocol — {q_num_label}{header_suffix}**\n\n"
         if desmos_eqs:
             eq_block = "\n".join(desmos_eqs) if isinstance(desmos_eqs, list) else str(desmos_eqs)
-            reply += f"**Type into Desmos:**\n```\n{eq_block}\n```\n\n"
+            reply += f"**Desmos Input:**\n```\n{eq_block}\n```\n\n"
         if rule_text:
-            reply += f"🛠️ **Step-by-Step Hack:**\n{rule_text}\n\n"
+            reply += f"**Execution:**\n{rule_text}\n\n"
         else:
-            reply += f"🛠️ **Fastest Method:**\n{explanation}\n\n"
-        reply += f"🎯 **Result:** This leads directly to **{correct_ans}**."
+            reply += f"**Method:**\n{explanation}\n\n"
+        reply += f"**Verified Answer:** **{correct_ans}**{video_line}"
         return reply
 
-    # 3. Focused response for "Hint" / "How do I start?" (without spoiling immediately unless asked)
-    if any(w in lower_msg for w in ("hint", "clue", "start", "stuck", "help me")) and "explain" not in lower_msg:
-        reply = f"🧭 **Hint for {q_num_label} ({skill_label}){name_str}:**\n\n"
+    # 3. Focused response for "Hint" (without spoiling the final answer)
+    if any(w in lower_msg for w in ("hint", "clue", "start", "stuck", "help me")) and "explain" not in lower_msg and "derivation" not in lower_msg:
+        reply = f"**Strategic Hint — {q_num_label}{header_suffix}**\n\n"
         if rule_text:
-            reply += f"1️⃣ **Key Rule to Apply:**\n{rule_text}\n\n"
+            reply += f"**Core Principle:**\n{rule_text}\n\n"
         if desmos_eqs:
             eq_block = "\n".join(desmos_eqs) if isinstance(desmos_eqs, list) else str(desmos_eqs)
-            reply += f"2️⃣ **Try graphing this in Desmos:**\n```\n{eq_block}\n```\n\n"
+            reply += f"**Desmos Setup:**\n```\n{eq_block}\n```\n\n"
         else:
             first_sentence = explanation.split(". ")[0] + "."
-            reply += f"2️⃣ **First Step:** {first_sentence}\n\n"
-        reply += "Give it a shot and tell me which answer you get (or tap **💡 Explain Rule** for the full solution)!"
+            reply += f"**Starting Step:** {first_sentence}\n\n"
+        reply += "Apply this step and select your answer, or click **Derivation** for the complete proof."
         return reply
 
-    # 4. Full Explanation ("Explain Rule", number input like "1", answer check, or general question)
-    reply = f"📘 **{q_num_label} Breakdown — {skill_label}:**\n\n"
+    # 4. Full Derivation ("Derivation", "Explain Rule", number input, answer check, or general question)
+    reply = f"**Formal Derivation — {q_num_label}{header_suffix}**\n\n"
     if effective_choice:
         if is_correct:
-            reply += f"🎯 **Spot on{name_str}!** **{effective_choice}** is 100% correct.\n\n"
+            reply += f"**Status:** Option **{effective_choice}** is correct.\n\n"
         else:
-            reply += f"💡 **Good effort{name_str}!** You tested **{effective_choice}**, whereas the correct answer is **{correct_ans}**.\n\n"
+            reply += f"**Status:** You selected **{effective_choice}**; the verified answer is **{correct_ans}**.\n\n"
             if traps and effective_choice in traps:
-                reply += f"⚠️ **Why {effective_choice} is a trap:** {traps[effective_choice]}\n\n"
+                reply += f"**Why Option {effective_choice} Fails:** {traps[effective_choice]}\n\n"
 
-    reply += f"**Step-by-Step Explanation:**\n{explanation}\n\n"
+    reply += f"**Derivation:**\n{explanation}\n\n"
 
     if rule_text and rule_text != explanation:
-        reply += f"📌 **SAT Rule / Shortcut:**\n{rule_text}\n\n"
+        reply += f"**1600-Scorer Protocol:**\n{rule_text}\n\n"
+
+    if traps and not effective_choice:
+        reply += "**Distractor Breakdown:**\n"
+        for opt, desc in traps.items():
+            reply += f"• **Option {opt}:** {desc}\n"
+        reply += "\n"
 
     if not effective_choice:
-        reply += f"✅ **Correct Answer:** **{correct_ans}**"
+        reply += f"**Verified Answer:** **{correct_ans}**"
 
+    reply += video_line
     return reply
 
 
