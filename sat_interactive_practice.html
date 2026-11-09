@@ -1934,45 +1934,86 @@
       sendChatMessage();
     }
 
-    function getComprehensiveCoachReply(q, userChoice, studentMsg) {
-      if (!q) return `I'm right here with you${studentName ? ', ' + studentName : ''}! Tell me which question you're solving and what you're thinking.`;
+    function getComprehensiveCoachReply(q, userChoice, studentMsg, qNumOverride) {
+      if (!q) return `I'm right here with you${studentName ? ', ' + studentName : ''}! Click any question in the test and tap **💡 Explain Rule**, **⚡ Desmos Trick**, or **⚠️ What's the trap?** for instant coaching.`;
 
-      const correctAns = q.correct;
-      const isRight = userChoice && (String(userChoice).trim().toUpperCase() === String(correctAns).trim().toUpperCase());
-      let reply = "";
-
+      const qNum = qNumOverride || (currentQIndex + 1);
+      const correctAns = String(q.correct || "").trim();
+      const msgClean = (studentMsg || "").trim();
+      const lowerMsg = msgClean.toLowerCase();
       const nameGreet = studentName ? `, ${studentName}` : "";
 
-      if (userChoice) {
-        if (isRight) {
-          reply += `🎯 **Spot on${nameGreet}!** Choice **${correctAns}** is 100% correct.\n\n`;
-        } else {
-          reply += `💡 **Good effort${nameGreet}!** You picked **Choice ${userChoice}**, but the correct answer is **Choice ${correctAns}**.\n\n`;
-        }
-      } else {
-        reply += `📌 **Question ${currentQIndex + 1} Guidance (${q.skill}):**\n\n`;
+      let effectiveChoice = String(userChoice || "").trim().toUpperCase();
+      if (["A", "B", "C", "D"].includes(msgClean.toUpperCase())) {
+        effectiveChoice = msgClean.toUpperCase();
       }
+      const isRight = effectiveChoice && (effectiveChoice === correctAns.toUpperCase());
 
-      const lowerMsg = (studentMsg || "").toLowerCase();
-
-      if (lowerMsg.includes("trap")) {
-        reply += `⚠️ **College Board Trap Breakdown:**\n`;
-        if (q.trap_breakdown && userChoice && q.trap_breakdown[userChoice]) {
-          reply += `${q.trap_breakdown[userChoice]}\n\n`;
-        } else if (q.trap_breakdown) {
+      // 1. Focused response for "What's the trap?"
+      if (lowerMsg.includes("trap") || lowerMsg.includes("distractor") || lowerMsg.includes("wrong")) {
+        let reply = `⚠️ **College Board Trap Alert — Question ${qNum} (${q.skill}):**\n\n`;
+        if (q.trap_breakdown) {
           reply += Object.entries(q.trap_breakdown).map(([opt, desc]) => `• **Choice ${opt}:** ${desc}`).join('\n') + `\n\n`;
+        } else if (Array.isArray(q.choices)) {
+          const wrongOpts = q.choices.filter(c => String(c.letter).toUpperCase() !== correctAns.toUpperCase());
+          reply += `Here is how College Board designs the distractors on this problem:\n`;
+          reply += wrongOpts.map(c => `• **Choice ${c.letter} (${c.text}):** Distractor designed to catch students who misapply the ${q.skill.toLowerCase()} rule or stop one step early.`).join('\n') + `\n\n`;
+        }
+        reply += `✅ **How to avoid the trap:** ${q.hack || q.explanation}\n\n`;
+        reply += `🎯 **Correct Answer:** **${correctAns}**`;
+        return reply;
+      }
+
+      // 2. Focused response for "Desmos Trick" / "Shortcut"
+      if (lowerMsg.includes("desmos") || lowerMsg.includes("shortcut") || lowerMsg.includes("trick")) {
+        let reply = `⚡ **10-Second Shortcut — Question ${qNum} (${q.skill}):**\n\n`;
+        if (q.desmosEquation && q.desmosEquation.length) {
+          reply += `**Type into Desmos:**\n\`\`\`\n${q.desmosEquation.join('\n')}\n\`\`\`\n\n`;
+        }
+        if (q.hack) {
+          reply += `🛠️ **Step-by-Step Hack:**\n${q.hack}\n\n`;
         } else {
-          reply += `The trap in this question is designed to lure students into confusing variables or rushing without verifying both equations.\n\n`;
+          reply += `🛠️ **Fastest Method:**\n${q.explanation}\n\n`;
+        }
+        reply += `🎯 **Result:** This leads directly to **${correctAns}**.`;
+        return reply;
+      }
+
+      // 3. Focused response for "Hint" / "How do I start?"
+      if ((lowerMsg.includes("hint") || lowerMsg.includes("clue") || lowerMsg.includes("start") || lowerMsg.includes("stuck")) && !lowerMsg.includes("explain")) {
+        let reply = `🧭 **Hint for Question ${qNum} (${q.skill})${nameGreet}:**\n\n`;
+        if (q.hack) {
+          reply += `1️⃣ **Key Rule to Apply:**\n${q.hack}\n\n`;
+        }
+        if (q.desmosEquation && q.desmosEquation.length) {
+          reply += `2️⃣ **Try graphing this in Desmos:**\n\`\`\`\n${q.desmosEquation.join('\n')}\n\`\`\`\n\n`;
+        } else {
+          const firstSentence = (q.explanation || "").split(". ")[0] + ".";
+          reply += `2️⃣ **First Step:** ${firstSentence}\n\n`;
+        }
+        reply += `Give it a shot and tell me which answer you get (or tap **💡 Explain Rule** for the full solution)!`;
+        return reply;
+      }
+
+      // 4. Full Explanation ("Explain Rule", question number input, answer check, or general question)
+      let reply = `📘 **Question ${qNum} Breakdown — ${q.skill}:**\n\n`;
+      if (effectiveChoice) {
+        if (isRight) {
+          reply += `🎯 **Spot on${nameGreet}!** **${effectiveChoice}** is 100% correct.\n\n`;
+        } else {
+          reply += `💡 **Good effort${nameGreet}!** You picked **${effectiveChoice}**, whereas the correct answer is **${correctAns}**.\n\n`;
         }
       }
 
-      reply += `📘 **Core Explanation:**\n${q.explanation}\n\n`;
+      reply += `**Step-by-Step Explanation:**\n${q.explanation}\n\n`;
 
       if (q.hack) {
-        reply += `⚡ **10-Second Shortcut / Desmos Keystrokes:**\n${q.hack}\n\n`;
+        reply += `📌 **10-Second Shortcut / Rule:**\n${q.hack}\n\n`;
       }
 
-      reply += `💪 Master this pattern now—recognizing this in 10 seconds is how you lock down ${studentTarget}!`;
+      if (!effectiveChoice) {
+        reply += `✅ **Correct Answer:** **${correctAns}**`;
+      }
       return reply;
     }
 
@@ -1984,12 +2025,31 @@
       appendChatMessage("student", msg);
       input.value = "";
 
-      const currentQ = activeQuestions[currentQIndex];
-      const currentAns = studentAnswers[currentQIndex] || "";
+      // Check if student typed a question number like "1", "13", "q5", "question 13"
+      let targetIdx = currentQIndex;
+      const qNumMatch = msg.match(/^(?:q(?:uestion)?\s*#?\s*)?(\d{1,2})$/i);
+      if (qNumMatch) {
+        const parsedNum = parseInt(qNumMatch[1], 10);
+        if (parsedNum >= 1 && parsedNum <= activeQuestions.length) {
+          targetIdx = parsedNum - 1;
+          if (targetIdx !== currentQIndex) {
+            renderQuestion(targetIdx);
+          }
+        }
+      }
+
+      const currentQ = activeQuestions[targetIdx];
+      const currentAns = studentAnswers[targetIdx] || "";
+
+      // If student clicked "Desmos Trick" on a math question with equations, also auto-load Desmos!
+      if (/desmos|shortcut|trick/i.test(msg) && currentQ && currentQ.desmosEquation) {
+        if (!isDesmosOpen) toggleDesmos();
+        else ensureDesmosReady();
+      }
 
       // Dynamic endpoint: If on sat.sirath.com, route API call to live Cloudflare Tunnel on laptop!
       const CLOUDFLARE_TUNNEL_URL = "https://subject-forestry-desert-mortgages.trycloudflare.com";
-      const isLocalHost = (window.location.hostname === "localhost" || window.location.hostname.startsWith("192.168."));
+      const isLocalHost = (window.location.hostname === "localhost" || window.location.hostname.startsWith("192.168.") || window.location.hostname === "127.0.0.1");
       const isTunnelHost = window.location.hostname.includes("trycloudflare.com");
       const targetApiUrl = (isLocalHost || isTunnelHost) ? "/api/chat" : `${CLOUDFLARE_TUNNEL_URL}/api/chat`;
 
@@ -1997,7 +2057,9 @@
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          question_id: currentQ.id || currentQIndex + 1,
+          question_id: currentQ ? (currentQ.id || targetIdx + 1) : targetIdx + 1,
+          question_number: targetIdx + 1,
+          question_data: currentQ,
           user_choice: currentAns,
           student_message: msg,
           student_name: studentName
@@ -2008,15 +2070,15 @@
         return res.json();
       })
       .then(data => {
-        if (data && data.reply) {
+        if (data && data.reply && !data.reply.includes("Tell me which question number")) {
           appendChatMessage("coach", data.reply);
         } else {
-          const fallback = getComprehensiveCoachReply(currentQ, currentAns, msg);
+          const fallback = getComprehensiveCoachReply(currentQ, currentAns, msg, targetIdx + 1);
           appendChatMessage("coach", fallback);
         }
       })
       .catch(() => {
-        const localReply = getComprehensiveCoachReply(currentQ, currentAns, msg);
+        const localReply = getComprehensiveCoachReply(currentQ, currentAns, msg, targetIdx + 1);
         appendChatMessage("coach", localReply);
       });
     }

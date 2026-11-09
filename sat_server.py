@@ -176,35 +176,109 @@ SAT_KNOWLEDGE = {
     }
 }
 
-def generate_coach_response(q_id, user_choice, student_msg, student_name=""):
-    q_data = SAT_KNOWLEDGE.get(q_id)
+def generate_coach_response(q_id, user_choice, student_msg, student_name="", question_data=None, question_number=None):
     name_str = f", {student_name}" if student_name else ""
+    msg_clean = (student_msg or "").strip()
+    lower_msg = msg_clean.lower()
+
+    # Map 101..125 -> 1..25 in SAT_KNOWLEDGE if needed
+    lookup_id = q_id
+    if isinstance(lookup_id, int) and 101 <= lookup_id <= 125:
+        lookup_id = lookup_id - 100
+    q_data = SAT_KNOWLEDGE.get(lookup_id) or SAT_KNOWLEDGE.get(q_id) or {}
+
+    # Merge rich question_data sent directly from the frontend
+    if isinstance(question_data, dict):
+        merged = dict(q_data)
+        for k in ("section", "domain", "skill", "stem", "prompt", "correct", "explanation", "hack", "choices", "desmosEquation", "trap_breakdown"):
+            if question_data.get(k) is not None:
+                merged[k] = question_data[k]
+        if not merged.get("rule") and question_data.get("hack"):
+            merged["rule"] = question_data["hack"]
+        if not merged.get("desmos") and question_data.get("desmosEquation"):
+            merged["desmos"] = "\n".join(question_data["desmosEquation"])
+        q_data = merged
+
     if not q_data:
-        return f"I'm right here with you{name_str}! Tell me which question number you're working on and what you're thinking."
+        return f"I'm right here with you{name_str}! Click any question in the test and tap **💡 Explain Rule**, **⚡ Desmos Trick**, or **⚠️ What's the trap?** for instant coaching."
 
-    correct_ans = q_data["correct"]
-    is_correct = (str(user_choice).strip().upper() == str(correct_ans).strip().upper())
-    
-    reply = ""
-    if user_choice:
-        if is_correct:
-            reply += f"🎯 **Spot on{name_str}!** Choice **{correct_ans}** is 100% correct.\n\n"
+    q_num_label = f"Question {question_number}" if question_number else f"Question {lookup_id}"
+    skill_label = q_data.get("skill", "SAT Concept")
+    correct_ans = str(q_data.get("correct", "")).strip()
+    explanation = q_data.get("explanation", "")
+    rule_text = q_data.get("rule") or q_data.get("hack") or ""
+    desmos_eqs = q_data.get("desmosEquation") or ([] if not q_data.get("desmos") else [q_data["desmos"]])
+    traps = q_data.get("trap_breakdown") or {}
+    choices = q_data.get("choices") or []
+
+    # Check if student typed a single letter A/B/C/D in chat to test an answer
+    effective_choice = str(user_choice or "").strip().upper()
+    if msg_clean.upper() in ("A", "B", "C", "D"):
+        effective_choice = msg_clean.upper()
+
+    is_correct = bool(effective_choice and effective_choice == correct_ans.upper())
+
+    # 1. Focused response for "What's the trap?"
+    if "trap" in lower_msg or "distractor" in lower_msg or "wrong" in lower_msg:
+        reply = f"⚠️ **College Board Trap Alert — {q_num_label} ({skill_label}):**\n\n"
+        if traps:
+            for opt, desc in traps.items():
+                reply += f"• **Choice {opt}:** {desc}\n"
+            reply += "\n"
+        elif choices:
+            wrong_opts = [c for c in choices if str(c.get("letter")).upper() != correct_ans.upper()]
+            reply += "Here is how College Board designs the distractors on this problem:\n"
+            for c in wrong_opts:
+                reply += f"• **Choice {c.get('letter')} ({c.get('text')}):** Distractor designed to catch students who misapply the {skill_label.lower()} rule or stop one step early.\n"
+            reply += "\n"
+        reply += f"✅ **How to avoid the trap:** {rule_text or explanation}\n\n"
+        reply += f"🎯 **Correct Answer:** **{correct_ans}**"
+        return reply
+
+    # 2. Focused response for "Desmos Trick" / "Shortcut"
+    if "desmos" in lower_msg or "shortcut" in lower_msg or "trick" in lower_msg:
+        reply = f"⚡ **10-Second Shortcut — {q_num_label} ({skill_label}):**\n\n"
+        if desmos_eqs:
+            eq_block = "\n".join(desmos_eqs) if isinstance(desmos_eqs, list) else str(desmos_eqs)
+            reply += f"**Type into Desmos:**\n```\n{eq_block}\n```\n\n"
+        if rule_text:
+            reply += f"🛠️ **Step-by-Step Hack:**\n{rule_text}\n\n"
         else:
-            reply += f"💡 **Good effort{name_str}!** You picked **{user_choice}**, but the correct answer is **{correct_ans}**.\n\n"
+            reply += f"🛠️ **Fastest Method:**\n{explanation}\n\n"
+        reply += f"🎯 **Result:** This leads directly to **{correct_ans}**."
+        return reply
 
-    reply += f"**Core Concept:** {q_data['explanation']}\n\n"
+    # 3. Focused response for "Hint" / "How do I start?" (without spoiling immediately unless asked)
+    if any(w in lower_msg for w in ("hint", "clue", "start", "stuck", "help me")) and "explain" not in lower_msg:
+        reply = f"🧭 **Hint for {q_num_label} ({skill_label}){name_str}:**\n\n"
+        if rule_text:
+            reply += f"1️⃣ **Key Rule to Apply:**\n{rule_text}\n\n"
+        if desmos_eqs:
+            eq_block = "\n".join(desmos_eqs) if isinstance(desmos_eqs, list) else str(desmos_eqs)
+            reply += f"2️⃣ **Try graphing this in Desmos:**\n```\n{eq_block}\n```\n\n"
+        else:
+            first_sentence = explanation.split(". ")[0] + "."
+            reply += f"2️⃣ **First Step:** {first_sentence}\n\n"
+        reply += "Give it a shot and tell me which answer you get (or tap **💡 Explain Rule** for the full solution)!"
+        return reply
 
-    if "trap_breakdown" in q_data and user_choice and user_choice in q_data["trap_breakdown"]:
-        reply += f"⚠️ **Why choice {user_choice} was a trap:** {q_data['trap_breakdown'][user_choice]}\n\n"
+    # 4. Full Explanation ("Explain Rule", number input like "1", answer check, or general question)
+    reply = f"📘 **{q_num_label} Breakdown — {skill_label}:**\n\n"
+    if effective_choice:
+        if is_correct:
+            reply += f"🎯 **Spot on{name_str}!** **{effective_choice}** is 100% correct.\n\n"
+        else:
+            reply += f"💡 **Good effort{name_str}!** You tested **{effective_choice}**, whereas the correct answer is **{correct_ans}**.\n\n"
+            if traps and effective_choice in traps:
+                reply += f"⚠️ **Why {effective_choice} is a trap:** {traps[effective_choice]}\n\n"
 
-    if "desmos" in q_data:
-        reply += f"⚡ **Desmos 10-Second Hack:**\n```\n{q_data['desmos']}\n```\n"
+    reply += f"**Step-by-Step Explanation:**\n{explanation}\n\n"
 
-    if "rule" in q_data:
-        reply += f"📌 **Remember this Rule:** {q_data['rule']}\n"
+    if rule_text and rule_text != explanation:
+        reply += f"📌 **SAT Rule / Shortcut:**\n{rule_text}\n\n"
 
-    if student_msg:
-        reply += f"\n*(Coach Note on your question: \"{student_msg}\")* Keep your confidence high—every mistake you catch now is points in your pocket on exam day!"
+    if not effective_choice:
+        reply += f"✅ **Correct Answer:** **{correct_ans}**"
 
     return reply
 
@@ -235,8 +309,17 @@ class SATMasteryHandler(http.server.SimpleHTTPRequestHandler):
                 user_choice = payload.get("user_choice", "")
                 student_msg = payload.get("student_message", "")
                 student_name = payload.get("student_name", "")
+                question_data = payload.get("question_data")
+                question_number = payload.get("question_number")
 
-                coach_reply = generate_coach_response(q_id, user_choice, student_msg, student_name)
+                coach_reply = generate_coach_response(
+                    q_id,
+                    user_choice,
+                    student_msg,
+                    student_name,
+                    question_data=question_data,
+                    question_number=question_number
+                )
 
                 # Log event
                 append_to_feed({
