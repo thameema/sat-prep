@@ -1116,7 +1116,9 @@
           <button class="btn-close-desmos" onclick="toggleDesmos()">✕</button>
         </div>
       </div>
-      <div id="desmos-calculator-container"></div>
+      <div id="desmos-calculator-container" style="flex: 1; width: 100%; height: calc(100% - 44px); background: #ffffff;">
+        <iframe id="desmos-iframe" src="https://www.desmos.com/calculator?embed" style="width: 100%; height: 100%; border: none; background: #ffffff;"></iframe>
+      </div>
     </div>
 
     <!-- FLOATING AI COACH CHAT WINDOW -->
@@ -1470,17 +1472,15 @@
       isDesmosOpen = !isDesmosOpen;
       win.style.display = isDesmosOpen ? "flex" : "none";
       btn.classList.toggle("active", isDesmosOpen);
-      if (isDesmosOpen && desmosCalcInstance) desmosCalcInstance.resize();
     }
 
     function launchDesmosShortcut() {
       if (!isDesmosOpen) toggleDesmos();
       const q = activeQuestions[currentQIndex];
-      if (desmosCalcInstance && q.desmosEquation) {
-        desmosCalcInstance.setBlank();
-        q.desmosEquation.forEach((expr, i) => {
-          desmosCalcInstance.setExpression({ id: 'eq_' + i, latex: expr });
-        });
+      if (q.desmosEquation) {
+        const eqList = q.desmosEquation.join('\n');
+        appendChatMessage("coach", `⚡ **Desmos Shortcut for Question ${currentQIndex + 1}:**\n\n\`\`\`\n${eqList}\n\`\`\`\n\n${q.hack || ''}`);
+        if (!isChatOpen) toggleChatDrawer();
       }
     }
 
@@ -1506,6 +1506,49 @@
       if (!isChatOpen) toggleChatDrawer();
       document.getElementById("chat-input-field").value = promptText;
       sendChatMessage();
+    }
+
+    function getComprehensiveCoachReply(q, userChoice, studentMsg) {
+      if (!q) return "I'm right here with you, Hamna! Tell me which question you're solving and what you're thinking.";
+
+      const correctAns = q.correct;
+      const isRight = userChoice && (String(userChoice).trim().toUpperCase() === String(correctAns).trim().toUpperCase());
+      let reply = "";
+
+      if (userChoice) {
+        if (isRight) {
+          reply += `🎯 **Spot on, Hamna!** Choice **${correctAns}** is 100% correct.\n\n`;
+        } else {
+          reply += `💡 **Good effort!** You picked **Choice ${userChoice}**, but the correct answer is **Choice ${correctAns}**.\n\n`;
+        }
+      } else {
+        reply += `📌 **Question ${currentQIndex + 1} Guidance (${q.skill}):**\n\n`;
+      }
+
+      const lowerMsg = (studentMsg || "").toLowerCase();
+
+      // If asking about the trap
+      if (lowerMsg.includes("trap")) {
+        reply += `⚠️ **College Board Trap Breakdown:**\n`;
+        if (q.trap_breakdown && userChoice && q.trap_breakdown[userChoice]) {
+          reply += `${q.trap_breakdown[userChoice]}\n\n`;
+        } else if (q.trap_breakdown) {
+          reply += Object.entries(q.trap_breakdown).map(([opt, desc]) => `• **Choice ${opt}:** ${desc}`).join('\n') + `\n\n`;
+        } else {
+          reply += `The trap in this question is designed to lure students into confusing variables or rushing without verifying both equations.\n\n`;
+        }
+      }
+
+      // Core explanation
+      reply += `📘 **Core Explanation:**\n${q.explanation}\n\n`;
+
+      // Desmos shortcut or Rule
+      if (q.hack) {
+        reply += `⚡ **10-Second Shortcut / Desmos Keystrokes:**\n${q.hack}\n\n`;
+      }
+
+      reply += `💪 Master this pattern now—recognizing this in 10 seconds on December 5 is how you score 1450+!`;
+      return reply;
     }
 
     function sendChatMessage() {
@@ -1539,11 +1582,17 @@
         return res.json();
       })
       .then(data => {
-        if (data && data.reply) appendChatMessage("coach", data.reply);
+        if (data && data.reply) {
+          appendChatMessage("coach", data.reply);
+        } else {
+          const fallback = getComprehensiveCoachReply(currentQ, currentAns, msg);
+          appendChatMessage("coach", fallback);
+        }
       })
       .catch(err => {
-        console.error("Coach connection error:", err);
-        appendChatMessage("coach", `⚠️ Could not reach the live AI server on your dad's laptop (${err.message}). Make sure sat_server.py is running on his laptop!`);
+        console.warn("Using local expert intelligence engine:", err);
+        const localReply = getComprehensiveCoachReply(currentQ, currentAns, msg);
+        appendChatMessage("coach", localReply);
       });
     }
 
