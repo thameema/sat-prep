@@ -1519,7 +1519,13 @@
       const currentQ = activeQuestions[currentQIndex];
       const currentAns = studentAnswers[currentQIndex] || "";
 
-      fetch("/api/chat", {
+      // Dynamic endpoint: If on sat.sirath.com (GitHub Pages), route API call to live Cloudflare Tunnel on this laptop!
+      const CLOUDFLARE_TUNNEL_URL = "https://subject-forestry-desert-mortgages.trycloudflare.com";
+      const isLocalHost = (window.location.hostname === "localhost" || window.location.hostname.startsWith("192.168."));
+      const isTunnelHost = window.location.hostname.includes("trycloudflare.com");
+      const targetApiUrl = (isLocalHost || isTunnelHost) ? "/api/chat" : `${CLOUDFLARE_TUNNEL_URL}/api/chat`;
+
+      fetch(targetApiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -1528,12 +1534,16 @@
           student_message: msg
         })
       })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error("HTTP error " + res.status);
+        return res.json();
+      })
       .then(data => {
         if (data && data.reply) appendChatMessage("coach", data.reply);
       })
-      .catch(() => {
-        appendChatMessage("coach", `Connected! For this question on ${currentQ.skill}: remember to check your formulas and test with Desmos!`);
+      .catch(err => {
+        console.error("Coach connection error:", err);
+        appendChatMessage("coach", `⚠️ Could not reach the live AI server on your dad's laptop (${err.message}). Make sure sat_server.py is running on his laptop!`);
       });
     }
 
